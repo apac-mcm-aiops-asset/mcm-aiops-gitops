@@ -9,7 +9,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Table of contents
 - [Pre-requisites](#pre-requisites)
-    - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
+    - [Red Hat OpenShift cluster](#red-hat-openshift-cluster-running-on-ibm-power)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)    
 - [Setup git repositories](#setup-git-repositories)
@@ -22,7 +22,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Pre-requisites
 
-### Red Hat OpenShift cluster 
+### Red Hat OpenShift cluster running on IBM Power (https://github.com/ocp-power-automation/ocp4-upi-powervm)
 - An OpenShift v4.7+ cluster is required.  
 
 ### CLI tools
@@ -56,9 +56,10 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Setup git repositories
 - The following set of Git repositories will be used for our GitOps workflow.  
-    - Main GitOps repository ([https://github.com/cloud-native-toolkit/multi-tenancy-gitops](https://github.com/cloud-native-toolkit/multi-tenancy-gitops)): This repository contains all the ArgoCD Applications for  the `infrastructure`, `services` and `application` layers.  Each ArgoCD Application will reference a specific K8s resource (yaml resides in a separate git repository), contain the configuration of the K8s resource, and determine where it will be deployed into the cluster.  
-    - Infrastructure GitOps repository ([https://github.com/cloud-native-toolkit/multi-tenancy-gitops-infra](https://github.com/cloud-native-toolkit/multi-tenancy-gitops-infra)): Contains the YAMLs for cluster-wide and/or infrastructure related K8s resources managed by a cluster administrator.  This would include `namespaces`, `clusterroles`, `clusterrolebindings`, `machinesets` to name a few.
-    - Services GitOps repository ([https://github.com/cloud-native-toolkit/multi-tenancy-gitops-services](https://github.com/cloud-native-toolkit/multi-tenancy-gitops-services)): Contains the YAMLs for K8s resources which will be used by the `application` layer.  This could include `subscriptions` for Operators, YAMLs of custom resources provided, or Helm Charts for tools provided by a third party.  These resource would usually be managed by the Administrator(s) and/or a DevOps team supporting application developers.  
+    - Main GitOps repository ([https://github.com/apac-mcm-aiops-asset/ocp-power-gitops](https://github.com/apac-mcm-aiops-asset/ocp-power-gitops)): This repository contains all the ArgoCD Applications for  the `infrastructure`, `services` and `application` layers.  Each ArgoCD Application will reference a specific K8s resource (yaml resides in a separate git repository), contain the configuration of the K8s resource, and determine where it will be deployed into the cluster.  
+    - Infrastructure GitOps repository ([https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-infra](https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-infra)): Contains the YAMLs for cluster-wide and/or infrastructure related K8s resources managed by a cluster administrator.  This would include `namespaces`, `clusterroles`, `clusterrolebindings`, `machinesets` to name a few.
+    - Services GitOps repository ([https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-services](https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-services)): Contains the YAMLs for K8s resources which will be used by the `application` layer.  This could include `subscriptions` for Operators, YAMLs of custom resources provided, or Helm Charts for tools provided by a third party.  These resource would usually be managed by the Administrator(s) and/or a DevOps team supporting application developers.
+    - Apps GitOps repository ([https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-apps](https://github.com/apac-mcm-aiops-asset/ocp-power-gitops-apps)): Contains the YAMLs for K8s resources to deploy `applications`.
 
 ### Tasks: 
 1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch). 
@@ -69,13 +70,14 @@ The reference architecture for this GitOps workflow can be found [here](https://
     mkdir -p gitops-repos
     cd gitops-repos
     # Clone using SSH
-    git clone git@github.com:<GIT_ORG>/multi-tenancy-gitops.git
-    git clone git@github.com:<GIT_ORG>/multi-tenancy-gitops-infra.git
-    git clone git@github.com:<GIT_ORG>/multi-tenancy-gitops-services.git
+    git clone git@github.com:<GIT_ORG>/ocp-power-gitops.git
+    git clone git@github.com:<GIT_ORG>/ocp-power-gitops-infra.git
+    git clone git@github.com:<GIT_ORG>/ocp-power-gitops-services.git
+    git clone git@github.com:<GIT_ORG>/ocp-power-gitops-apps.git
     ```
-3. Update the default Git URl and branch references in your `multi-tenancy-gitops` repository by running the provided script `./scripts/set-git-source.sh` script.
+3. Update the default Git URl and branch references in your `ocp-power-gitops` repository by running the provided script `./scripts/set-git-source.sh` script.
     ```bash
-    cd multi-tenancy-gitops
+    cd ocp-power-gitops
     GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
     git commit -m "Update Git URl and branch references"
     git push origin master
@@ -121,7 +123,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 
 ## Select resources to deploy
-- Clone the `multi-tenancy-gitops` repository in your Git Organization if you have not already done so and select the K8s resources to deploy in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers. 
+- Clone the `ocp-power-gitops` repository in your Git Organization if you have not already done so and select the K8s resources to deploy in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers. 
 - Existing recipes are available and additional ones will be made available in the **doc** directory. 
     - [ACE recipe](doc/ace-recipe.md)
     - [MQ recipe](doc/mq-recipe.md)
