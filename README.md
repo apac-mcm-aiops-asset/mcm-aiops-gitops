@@ -23,8 +23,15 @@ The reference architecture for this GitOps workflow can be found [here](https://
 ## Pre-requisites
 
 ### Red Hat OpenShift cluster
-- An OpenShift v4.7+ cluster is required.  
-- For [Power Systems](https://github.com/ocp-power-automation/ocp4-upi-powervm)
+- An OpenShift v4.7+ cluster is required 
+- [Azure](https://github.com/ibm-cloud-architecture/terraform-openshift4-azure)
+- [AWS](https://github.com/ibm-cloud-architecture/terraform-openshift4-aws)
+- [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
+- [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware)
+- [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd) 
+- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
+- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
+- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
 
 ### CLI tools
 - Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console. 
