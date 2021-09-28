@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ibm-cp4mcm-operators
+  annotations:
+    argocd.argoproj.io/sync-wave: "230"
+  labels:
+    gitops.tier.group: ibm-cloudpak
+    gitops.tier.layer: services
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: openshift-operators
+    server: 'https://kubernetes.default.svc'
+  project: services
+  source:
+    path: operators/ibm-cp4mcm-operators
+    helm:
+      values: |
+        ibm-cp4mcm-operators:
+          subscriptions:
+            cloudpakformulticloudmanagement:
+              name: ibm-cp-multicloudmanagement
+              subscription:
+                channel: 2.3-stable
+                installPlanApproval: Automatic
+                name: ibm-management-orchestrator
+                source: ibm-management-orchestrator
+                sourceNamespace: openshift-marketplace
+                startingCSV: ibm-management-orchestrator.v2.3.2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -63,6 +63,15 @@ spec:
                 updateStrategy:
                   registryPoll:
                     interval: 45m
+            
+            managementorchestration:
+              name: ibm-management-orchestration
+              catalog:
+                displayName: IBM Management Orchestrator Catalog
+                publisher: IBM
+                sourceType: grpc
+                image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.3.11
+
   syncPolicy:
     automated:
       prune: true

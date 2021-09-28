@@ -12,6 +12,7 @@ resources:
 #- argocd/namespace-sealed-secrets.yaml
 #- argocd/namespace-tools.yaml
 #- argocd/namespace-openshift-storage.yaml
+#- argocd/namespace-openshift-acm.yaml
 #- argocd/storage.yaml
 #- argocd/infraconfig.yaml
 #- argocd/machinesets.yaml
