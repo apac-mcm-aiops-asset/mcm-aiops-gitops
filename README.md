@@ -27,7 +27,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 - [Setup git repositories](#setup-git-repositories)
 - [Install and configure OpenShift GitOps](#install-and-configure-openshift-gitops)
 - [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
-- [Select resources to deploy](#select-resources-to-deploy)
+- [The resources to be deployed](#the-resources-to-be-deployed)
 - [Troubleshooting](doc/troubleshooting.md)
 - [FAQ](doc/faq.md)
 
@@ -78,6 +78,7 @@ To get an entitlement key:
     --docker-server=cp.icr.io
     ```
 It is highly recommended that you utilise SealedSecrets for the Entitlement Key and the Steps will walk you through "sealing" the key from prying eyes.
+
 ## Setup git repositories
 
 - The following set of Git repositories will be used for our GitOps workflow.  

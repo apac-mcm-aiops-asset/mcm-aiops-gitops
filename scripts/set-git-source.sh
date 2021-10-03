@@ -12,17 +12,16 @@ set -u
 
 GIT_BRANCH=${GIT_BRANCH:-master}
 GIT_BASEURL=${GIT_BASEURL:-https://github.com}
-GIT_GITOPS=${GIT_GITOPS:-multi-tenancy-gitops.git}
+GIT_GITOPS=${GIT_GITOPS:-mcm-aiops-gitops.git}
 GIT_GITOPS_BRANCH=${GIT_GITOPS_BRANCH:-${GIT_BRANCH}}
-GIT_GITOPS_INFRA=${GIT_GITOPS_INFRA:-multi-tenancy-gitops-infra.git}
+GIT_GITOPS_INFRA=${GIT_GITOPS_INFRA:-mcm-aiops-gitops-infra.git}
 GIT_GITOPS_INFRA_BRANCH=${GIT_GITOPS_INFRA_BRANCH:-${GIT_BRANCH}}
-GIT_GITOPS_SERVICES=${GIT_GITOPS_SERVICES:-multi-tenancy-gitops-services.git}
+GIT_GITOPS_SERVICES=${GIT_GITOPS_SERVICES:-mcm-aiops-gitops-services.git}
 GIT_GITOPS_SERVICES_BRANCH=${GIT_GITOPS_SERVICES_BRANCH:-${GIT_BRANCH}}
-GIT_GITOPS_APPLICATIONS=${GIT_GITOPS_APPLICATIONS:-multi-tenancy-gitops-apps.git}
+GIT_GITOPS_APPLICATIONS=${GIT_GITOPS_APPLICATIONS:-mcm-aiops-gitops-apps.git}
 GIT_GITOPS_APPLICATIONS_BRANCH=${GIT_GITOPS_APPLICATIONS_BRANCH:-${GIT_BRANCH}}
 HELM_REPOURL=${HELM_REPOURL:-https://charts.cloudnativetoolkit.dev}
-
-
+HELM_REPOMCMAIOPSURL=${HELM_REPOMCMAIOPSURL:-https://charts.mcmaiops.rep}
 
 echo "Setting kustomization patches to ${GIT_BASEURL}/${GIT_ORG}/${GIT_GITOPS} on branch ${GIT_GITOPS_BRANCH}"
 echo "Setting kustomization patches to ${GIT_BASEURL}/${GIT_ORG}/${GIT_GITOPS_INFRA} on branch ${GIT_GITOPS_INFRA_BRANCH}"
