@@ -4,7 +4,9 @@ This playbook will walk you through automating a `Platform` that provides deploy
 
 The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
 
-This asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) team. Without the efforts done by the Cloud Native Toolkit - GitOps Productions Deployment Guide team, then our asset would have struggled to get off the ground. Our hope is for one day in the future our efforts to be merged back into the original code base from which this fork was created.
+![Automate the Plumbing](doc/images/automation-deployment.png)
+
+This asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) team. Without the efforts done by the Cloud Native Toolkit - GitOps Productions Deployment Guide team, then this asset would have struggled to get off the ground. The hope is for one day in the future our efforts to be merged back into the original code base from which this fork was created.
 
 This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
 
