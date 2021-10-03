@@ -1,10 +1,17 @@
-# APAC MCM / AIOps GitOps Asset
+# APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`
 
-This playbook will walk you through creating a `Platform` that provides automation and deployment of OpenShift/Kubernetes Clusters, Virtual Machines and Applications across a Public, Private and Hybrid Cloud.
+This playbook will walk you through automating a `Platform` that provides deployment of OpenShift/Kubernetes Clusters, Virtual Machines and Applications across a Public, Private and Hybrid Cloud.
 
-The asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) and may be merged in the future. This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
+The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
 
-This repository provides our opinionated point of view on how `GitOps` can be used to manage the infrastructure, services and application layers of K8s based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties.  The instructions and examples are focused around the [Red Hat OpenShift](https://cloud.redhat.com/learn/what-is-openshift) platform and [IBM Cloud Pak for MultiCloud Management](https://www.ibm.com/cloud/paks) and [IBM Cloud Pak for AIOps](https://www.ibm.com/cloud/paks).
+This asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) team. Without the efforts done by the Cloud Native Toolkit - GitOps Productions Deployment Guide team, then our asset would have struggled to get off the ground. Our hope is for one day in the future our efforts to be merged back into the original code base from which this fork was created.
+
+This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
+
+This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OPenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties. 
+
+The instructions and examples are focused around the [Red Hat OpenShift](https://cloud.redhat.com/learn/what-is-openshift) platform and [IBM Cloud Pak for MultiCloud Management](https://www.ibm.com/cloud/paks) and [IBM Cloud Pak for AIOps](https://www.ibm.com/cloud/paks).
+
 
 The GitOps concept originated from [Weaveworks](https://www.weave.works/) back in 2017 and the goal was to automate the operations of a Kubernetes (K8s) system using a model external to the system as the source of truth ([History of GitOps](https://www.weave.works/blog/the-history-of-gitops)).
 
@@ -50,7 +57,10 @@ An OpenShift v4.7+ cluster is required
     ```
 
 ### IBM Entitlement Key
-- The `IBM Entitlement Key` is required to pull IBM Cloud Pak specific container images from the IBM Entitled Registry.  To get an entitlement key, 
+
+- The `IBM Entitlement Key` is required to pull IBM Cloud Pak specific container images from the IBM Entitled Registry.
+
+To get an entitlement key:
 
     1. Log in to [MyIBM Container Software Library](https://myibm.ibm.com/products-services/containerlibrary) with an IBMid and password associated with the entitled software.  
     2. Select the **View library** option to verify your entitlement(s). 
@@ -65,8 +75,9 @@ An OpenShift v4.7+ cluster is required
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
     ```
-
+It is highly recommended that you utilise SealedSecrets for the Entitlement Key and the Steps will walk you through "sealing" the key from prying eyes.
 ## Setup git repositories
+
 - The following set of Git repositories will be used for our GitOps workflow.  
     - Main GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops)): This repository contains all the ArgoCD Applications for  the `infrastructure`, `services` and `application` layers.  Each ArgoCD Application will reference a specific K8s resource (yaml resides in a separate git repository), contain the configuration of the K8s resource, and determine where it will be deployed into the cluster.  
     - Infrastructure GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-infra](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-infra)): Contains the YAMLs for cluster-wide and/or infrastructure related K8s resources managed by a cluster administrator.  This would include `namespaces`, `clusterroles`, `clusterrolebindings`, `machinesets` to name a few.
@@ -75,6 +86,7 @@ An OpenShift v4.7+ cluster is required
     - VM repository : Contains the YAMLs for deploying Virtual Machines.
 
 ### Tasks: 
+
 1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch). 
 2. From each template repository, click the `Use this template` button and create a copy of the repository in your new GitHub Organization.
     ![Create repository from a template](doc/images/git-repo-template-button.png)
@@ -118,11 +130,12 @@ An OpenShift v4.7+ cluster is required
     ```
 
 
-## Bootstrap the OpenShift cluster 
+## Bootstrap the OpenShift cluster
+
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
 
 ### Tasks: 
-1. Select a profile and delete the others from the `0-bootstrap` directory.  If this is your first usage of the gitops workflow, use the `single-cluster` profile and deploy the ArgoCD Bootstrap Application.
+1. Deploy the ArgoCD Bootstrap Application.
     ```bash
     GITOPS_PROFILE="0-bootstrap/single-cluster"
     oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
@@ -134,27 +147,32 @@ An OpenShift v4.7+ cluster is required
     ```
 
 
-## Select resources to deploy
-- Clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and select the K8s resources to deploy in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers. 
-- Existing recipes are available and additional ones will be made available in the **doc** directory. 
-    - [ACE recipe](doc/ace-recipe.md)
-    - [MQ recipe](doc/mq-recipe.md)
-    - [Process Mining recipe](doc/process-mining-recipe.md)
+## The resources to be deployed
+
+- The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
 
 ### Tasks: 
-1. Select a profile and delete the others from the `0-bootstrap` directory.  If this is your first usage of the gitops workflow, Use the `single-cluster` profile.
+
+1. Select a profile and delete the others from the `0-bootstrap` directory.   usage of the gitops workflow, Use the `single-cluster` profile.
+
     ```bash
     GITOPS_PROFILE="0-bootstrap/single-cluster"
     ```
-2. Review the `Infrastructure` layer [kustomization.yaml](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and un-comment the resources to deploy.  
-3. Review the `Services` layer [kustomization.yaml](0-bootstrap/single-cluster/2-services/kustomization.yaml) and un-comment the resources to deploy.  
+
+2. `Update this line as we will only be deploying the resources we require, all others will be removed` Review the `Infrastructure` layer [kustomization.yaml](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and un-comment the resources to deploy.  
+
+3. `Update this line as we will only be deploying the resources we require, all others will be removed` Review the `Services` layer [kustomization.yaml](0-bootstrap/single-cluster/2-services/kustomization.yaml) and un-comment the resources to deploy.  
+
 4. Commit and push changes to your git repository
+
     ```bash
     git add .
     git commit -m "initial bootstrap setup"
     git push origin
     ```
-5. If an IBM Cloud Pak is installed, retrieve the Platform Navigator console URL and admin password.
+
+5. Retrieve the IBM Cloud Pak Platform Navigator console URL and admin password.
+
     ```bash
     # Verify the Common Services instance has been deployed successfully
     oc get commonservice common-service -n ibm-common-services -o=jsonpath='{.status.phase}'
