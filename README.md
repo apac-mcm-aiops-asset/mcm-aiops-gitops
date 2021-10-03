@@ -18,6 +18,7 @@ The GitOps concept originated from [Weaveworks](https://www.weave.works/) back i
 The reference architecture for this GitOps workflow can be found [here](https://cloudnativetoolkit.dev/adopting/use-cases/gitops/gitops-ibm-cloud-paks/).  
 
 ## Table of contents
+
 - [Pre-requisites](#pre-requisites)
     - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
     - [CLI tools](#cli-tools)
@@ -91,6 +92,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 2. From each template repository, click the `Use this template` button and create a copy of the repository in your new GitHub Organization.
     ![Create repository from a template](doc/images/git-repo-template-button.png)
 3. Clone the repositories locally. 
+
     ```bash
     mkdir -p gitops-repos
     cd gitops-repos
@@ -100,7 +102,9 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops-services.git
     git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops-apps.git
     ```
-3. Update the default Git URl and branch references in your `mcm-aiops-gitops` repository by running the provided script `./scripts/set-git-source.sh` script.
+
+4. Update the default Git URl and branch references in your `mcm-aiops-gitops` repository by running the provided script `./scripts/set-git-source.sh` script.
+
     ```bash
     cd mcm-aiops-gitops
     GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
@@ -108,10 +112,12 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     git push origin master
     ```
 
-## Install and configure OpenShift GitOps 
+## Install and configure OpenShift GitOps
+
 - [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.7/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources. 
 
-### Tasks: 
+### Tasks:
+
 1. Install the OpenShift GitOps Operator, create a `ClusterRole` and deploy a default instance of ArgoCD.  
     ```bash
     oc apply -f setup/ocp47/
@@ -134,7 +140,8 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
 
-### Tasks: 
+### Tasks:
+
 1. Deploy the ArgoCD Bootstrap Application.
     ```bash
     GITOPS_PROFILE="0-bootstrap/single-cluster"
@@ -146,22 +153,21 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
 
-
 ## The resources to be deployed
 
 - The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
 
 ### Tasks: 
 
-1. Select a profile and delete the others from the `0-bootstrap` directory.   usage of the gitops workflow, Use the `single-cluster` profile.
+1. Use the `single-cluster` profile.
 
     ```bash
     GITOPS_PROFILE="0-bootstrap/single-cluster"
     ```
 
-2. `Update this line as we will only be deploying the resources we require, all others will be removed` Review the `Infrastructure` layer [kustomization.yaml](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and un-comment the resources to deploy.  
+2. Review the `Infrastructure` layer [kustomization.yaml](0-bootstrap/single-cluster/1-infra/kustomization.yaml) to view the resources that will be deployed.
 
-3. `Update this line as we will only be deploying the resources we require, all others will be removed` Review the `Services` layer [kustomization.yaml](0-bootstrap/single-cluster/2-services/kustomization.yaml) and un-comment the resources to deploy.  
+3. Review the `Services` layer [kustomization.yaml](0-bootstrap/single-cluster/2-services/kustomization.yaml) to view the resources that will be deployed.  
 
 4. Commit and push changes to your git repository
 
