@@ -2,18 +2,17 @@
 
 This playbook will walk you through automating a `Platform` that provides deployment of OpenShift/Kubernetes Clusters, Virtual Machines and Applications across a Public, Private and Hybrid Cloud.
 
-The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
-
 ![Automate the Plumbing](doc/images/automation-deployment.png)
+
+The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
 
 This asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) team. Without the efforts done by the Cloud Native Toolkit - GitOps Productions Deployment Guide team, then this asset would have struggled to get off the ground. The hope is for one day in the future our efforts to be merged back into the original code base from which this fork was created.
 
 This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
 
-This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OPenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties. 
+This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties. 
 
 The instructions and examples are focused around the [Red Hat OpenShift](https://cloud.redhat.com/learn/what-is-openshift) platform and [IBM Cloud Pak for MultiCloud Management](https://www.ibm.com/cloud/paks) and [IBM Cloud Pak for AIOps](https://www.ibm.com/cloud/paks).
-
 
 The GitOps concept originated from [Weaveworks](https://www.weave.works/) back in 2017 and the goal was to automate the operations of a Kubernetes (K8s) system using a model external to the system as the source of truth ([History of GitOps](https://www.weave.works/blog/the-history-of-gitops)).
 
