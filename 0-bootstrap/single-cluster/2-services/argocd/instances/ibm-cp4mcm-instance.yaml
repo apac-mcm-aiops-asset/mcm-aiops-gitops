@@ -15,7 +15,7 @@ spec:
       prune: true
       selfHeal: true
   destination:
-    namespace: tools
+    namespace: ibm-cp4mcm
     server: https://kubernetes.default.svc
   project: services
   source:

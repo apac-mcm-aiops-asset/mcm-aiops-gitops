@@ -15,10 +15,10 @@ resources:
 #- argocd/instances/ibm-platform-navigator-instance.yaml
 
 # IBM Foundations / Common Services
-#- argocd/operators/ibm-foundations.yaml
-#- argocd/instances/ibm-foundational-services-instance.yaml
-#- argocd/operators/ibm-automation-foundation-core-operator.yaml
-#- argocd/operators/ibm-automation-foundation-operator.yaml
+- argocd/operators/ibm-foundations.yaml
+- argocd/instances/ibm-foundational-services-instance.yaml
+- argocd/operators/ibm-automation-foundation-core-operator.yaml
+- argocd/operators/ibm-automation-foundation-operator.yaml
 
 # IBM Catalogs
 #- argocd/operators/ibm-catalogs.yaml
@@ -53,8 +53,10 @@ resources:
 #- argocd/instances/openshift-service-mesh-instance.yaml
 
 # MultiCloud Management / Red Hat Advanced Cluster Management
-#- argocd/operators/openshift-acm.yaml
-#- argocd/instances/openshift-acm-instance.yaml
+- argocd/operators/openshift-acm.yaml
+- argocd/instances/openshift-acm-instance.yaml
+- argocd/operators/ibm-cp4mcm-operator.yaml
+- argocd/instances/ibm-cp4mcm-instance.yaml
 
 patches:
 - target:
