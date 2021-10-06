@@ -20,16 +20,20 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Table of contents
 
-- [Pre-requisites](#pre-requisites)
+- [APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`](#apac-mcm--aiops-gitops-asset-aka-automating-the-plumbing)
+  - [Table of contents](#table-of-contents)
+  - [Pre-requisites](#pre-requisites)
     - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
     - [CLI tools](#cli-tools)
-    - [IBM Entitlement Key](#ibm-entitlement-key)    
-- [Setup git repositories](#setup-git-repositories)
-- [Install and configure OpenShift GitOps](#install-and-configure-openshift-gitops)
-- [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
-- [The resources to be deployed](#the-resources-to-be-deployed)
-- [Troubleshooting](doc/troubleshooting.md)
-- [FAQ](doc/faq.md)
+    - [IBM Entitlement Key](#ibm-entitlement-key)
+  - [Setup git repositories](#setup-git-repositories)
+    - [Tasks:](#tasks)
+  - [Install and configure OpenShift GitOps](#install-and-configure-openshift-gitops)
+    - [Tasks:](#tasks-1)
+  - [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
+    - [Tasks:](#tasks-2)
+  - [The resources to be deployed](#the-resources-to-be-deployed)
+    - [Tasks:](#tasks-3)
 
 
 ## Pre-requisites
@@ -98,11 +102,15 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     ```bash
     mkdir -p gitops-repos
     cd gitops-repos
+    
+    # Example: set default Git org for clone commands below
+    GIT_ORG=apac-mcm-aiops-asset
+
     # Clone using SSH
-    git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops.git
-    git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops-infra.git
-    git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops-services.git
-    git clone git@github.com:<GIT_ORG>/mcm-aiops-gitops-apps.git
+    git clone git@github.com:$GIT_ORG/mcm-aiops-gitops.git
+    git clone git@github.com:$GIT_ORG/mcm-aiops-gitops-infra.git
+    git clone git@github.com:$GIT_ORG/mcm-aiops-gitops-services.git
+    git clone git@github.com:$GIT_ORG/mcm-aiops-gitops-apps.git
     ```
 
 4. Update the default Git URl and branch references in your `mcm-aiops-gitops` repository by running the provided script `./scripts/set-git-source.sh` script.
@@ -133,7 +141,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     ```
 1. Create a custom ArgoCD instance with custom checks
     ```bash
-    oc apply -f gitops-0-bootstrap/setup/ocp47/argocd-instance/ -n openshift-gitops
+    oc apply -f setup/ocp47/argocd-instance/ -n openshift-gitops
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
