@@ -22,7 +22,7 @@ resources:
 #- argocd/instances/cert-manager-instance.yaml
 
 # Sealed Secrets
-- argocd/instances/sealed-secrets.yaml
+# - argocd/instances/sealed-secrets.yaml
 
 # CICD
 #- argocd/operators/grafana-operator.yaml
