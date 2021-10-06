@@ -19,4 +19,4 @@ spec:
     server: https://kubernetes.default.svc
   project: services
   source:
-    path: instances/ibm-cp4mcm-instance.yaml
+    path: instances/ibm-cp4mcm-instance
