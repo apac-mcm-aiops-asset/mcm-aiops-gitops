@@ -117,7 +117,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
     ```bash
     cd mcm-aiops-gitops
-    GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
+    GIT_ORG=apac-mcm-aiops-asset GIT_BRANCH=example ./scripts/set-git-source.sh
     git commit -m "Update Git URl and branch references"
     git push origin master
     ```
