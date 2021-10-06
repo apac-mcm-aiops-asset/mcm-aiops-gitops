@@ -261,3 +261,15 @@ rules:
       - icp4a.ibm.com
     resources:
       - icp4aclusters
+  - verbs:
+      - '*'
+    apiGroups:
+      - orchestrator.management.ibm.com
+    resources:
+      - installations
+  - verbs:
+      - '*'
+    apiGroups:
+      - operator.open-cluster-management.io
+    resources:
+      - multiclusterhubs
