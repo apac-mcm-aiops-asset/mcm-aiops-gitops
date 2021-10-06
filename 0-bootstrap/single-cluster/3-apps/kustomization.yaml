@@ -15,7 +15,7 @@ resources:
 #- argocd/apic/prod.yaml
 
 #- argocd/bookinfo/cicd.yaml
-#- argocd/bookinfo/dev.yaml
+- argocd/bookinfo/dev.yaml
 #- argocd/bookinfo/stage.yaml
 #- argocd/bookinfo/prod.yaml
 
