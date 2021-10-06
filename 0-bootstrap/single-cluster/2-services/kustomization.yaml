@@ -8,9 +8,9 @@ resources:
 
 # IBM Foundations / Common Services
 - argocd/operators/ibm-foundations.yaml
-- argocd/instances/ibm-foundational-services-instance.yaml
-- argocd/operators/ibm-automation-foundation-core-operator.yaml
-- argocd/operators/ibm-automation-foundation-operator.yaml
+# - argocd/instances/ibm-foundational-services-instance.yaml
+# - argocd/operators/ibm-automation-foundation-core-operator.yaml
+# - argocd/operators/ibm-automation-foundation-operator.yaml
 
 # IBM Catalogs
 - argocd/operators/ibm-catalogs.yaml
