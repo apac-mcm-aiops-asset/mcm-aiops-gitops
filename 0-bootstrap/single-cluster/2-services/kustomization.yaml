@@ -7,10 +7,11 @@ resources:
 #- argocd/instances/ibm-platform-navigator-instance.yaml
 
 # IBM Foundations / Common Services
-- argocd/operators/ibm-foundations.yaml
+# - argocd/operators/ibm-foundations.yaml
 # - argocd/instances/ibm-foundational-services-instance.yaml
 # - argocd/operators/ibm-automation-foundation-core-operator.yaml
 # - argocd/operators/ibm-automation-foundation-operator.yaml
+- argocd/operators/ibm-common-services-mcm.yaml
 
 # IBM Catalogs
 - argocd/operators/ibm-catalogs.yaml
