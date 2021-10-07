@@ -121,22 +121,26 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 ### Tasks:
 
 1. Install the OpenShift GitOps Operator, create a `ClusterRole` and deploy a default instance of ArgoCD.  
+
     ```bash
     oc apply -f setup/ocp47/
     while ! oc wait crd applications.argoproj.io --timeout=-1s --for=condition=Established  2>/dev/null; do sleep 30; done
     while ! oc wait pod --timeout=-1s --for=condition=Ready -l '!job-name' -n openshift-gitops > /dev/null; do sleep 30; done
     ```
-1. Delete the default ArgoCD instance
+
+2. Delete the default ArgoCD instance
+
     ```bash
     oc delete gitopsservice cluster -n openshift-gitops || true
     oc delete argocd openshift-gitops -n openshift-gitops || true
     ```
-1. Create a custom ArgoCD instance with custom checks
+
+3. Create a custom ArgoCD instance with custom checks
+
     ```bash
-    oc apply -f gitops-0-bootstrap/setup/ocp47/argocd-instance/ -n openshift-gitops
+    oc apply -f 0-bootstrap/setup/ocp47/argocd-instance/ -n openshift-gitops
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
-
 
 ## Bootstrap the OpenShift cluster
 
@@ -158,6 +162,14 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 ## The resources to be deployed
 
 - The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
+
+- The asset is set to automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own.
+
+- Additionally, the asset will automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD and then deploy a sample application. Again, this configuration is for an example only and you will need to replace these files with your own.
+
+- Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
+
+- Finally, the asset will provide example OpenShift Pipeline for deploying a Virtual Machine to the IaaS environment.
 
 ### Tasks: 
 
@@ -194,3 +206,5 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     oc get route -n tools integration-navigator-pn -o template --template='https://{{.spec.host}}'
     oc extract -n ibm-common-services secrets/platform-auth-idp-credentials --keys=admin_username,admin_password --to=-
     ```
+
+

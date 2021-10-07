@@ -11,7 +11,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: open-cluster-managment
+    namespace: open-cluster-management
     server: https://kubernetes.default.svc
   project: services
   source:
