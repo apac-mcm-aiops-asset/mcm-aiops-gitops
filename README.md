@@ -2,7 +2,7 @@
 
 This playbook will walk you through automating a `Platform` that provides deployment of OpenShift/Kubernetes Clusters, Virtual Machines and Applications across a Public, Private and Hybrid Cloud.
 
-![Automate the Plumbing](doc/images/automation-deployment.png)
+![Automate the Plumbing](doc/images/automate-the-plumbing.png)
 
 The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
 
@@ -38,7 +38,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Pre-requisites
 
-### Red Hat OpenShift cluster
+### Red Hat OpenShift Hub cluster
 
 An OpenShift v4.7+ cluster is required 
 - [Azure](https://github.com/ibm-cloud-architecture/terraform-openshift4-azure)
@@ -46,9 +46,9 @@ An OpenShift v4.7+ cluster is required
 - [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
 - [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware) * VMWare IPI can also be used.
 - [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd) 
-- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
-- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
-- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
+- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm) * Requires RHACM 2.4 (ETA Q4 21)
+- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc) * Requires RHACM 2.4 (ETA Q4 21)
+- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs) * Requires RHACM 2.4 (ETA Q4 21)
 
 ### CLI tools
 - Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console. 
@@ -171,13 +171,15 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
 - The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
 
-- The asset is set to automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own.
+- The asset is set to automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
 
-- Additionally, the asset will automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD and then deploy a sample application. Again, this configuration is for an example only and you will need to replace these files with your own.
+- Additionally, the asset will automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
 
 - Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
 
-- Finally, the asset will provide example OpenShift Pipeline for deploying a Virtual Machine to the IaaS environment.
+- The asset will provide example OpenShift Pipeline for deploying a Virtual Machine to the IaaS environment.
+
+- Finally, we have included an example application which can deployed via GitOps to OpenShift Clusters configured into Red Hat Advanced Cluster Management.
 
 ### Tasks: 
 
@@ -215,4 +217,27 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     oc extract -n ibm-common-services secrets/platform-auth-idp-credentials --keys=admin_username,admin_password --to=-
     ```
 
+6. Complete Manual Steps to Import vSphere and IBM Cloud OpenShift Clusters to Red Hat Advanced Cluster Management * Needs to be automated in the future *
 
+    ```bash
+    OCP-VSPHERE="ocp-swinney-io"
+    OCP-IBMCLOUD="syd-ibm-cloud"
+
+    # Log into OCP Production Hub Cluster
+    
+    # Klusterlet-crd
+    oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.crds\\.yaml} | base64 --decode > ${OCP-VSPHERE}-klusterlet-crd.yaml
+    oc get secret ${OCP-IBMCLOUD}-import -n ${OCP-IBMCLOUD} -o jsonpath={.data.crds\\.yaml} | base64 --decode > ${OCP-IBMCLOUD}-klusterlet-crd.yaml
+    
+    # managed-cluster-import
+    oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.import\\.yaml} | base64 --decode > ${OCP-VSPHERE}-managed-cluster-import.yaml
+    oc get secret ${OCP-IBMCLOUD}-import -n ${OCP-IBMCLOUD} -o jsonpath={.data.import\\.yaml} | base64 --decode > ${OCP-IBMCLOUD}-managed-cluster-import.yaml
+    
+    # Log into vSphere Managed OCP Cluster
+    oc apply -f ${OCP-VSPHERE}-klusterlet-crd.yaml
+    oc apply -f ${OCP-VSPHERE}-managed-cluster-import.yaml
+    
+    # Log into IBM Cloud Managed OCP Cluster
+    oc apply -f ${OCP-IBMCLOUD}-klusterlet-crd.yaml
+    oc apply -f ${OCP-IBMCLOUD}-managed-cluster-import.yaml
+    ```
