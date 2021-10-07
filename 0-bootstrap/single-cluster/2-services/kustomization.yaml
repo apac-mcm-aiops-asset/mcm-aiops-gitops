@@ -14,7 +14,7 @@ resources:
 - argocd/operators/ibm-common-services-mcm.yaml
 
 # IBM Catalogs
-- argocd/operators/ibm-catalogs.yaml
+# - argocd/operators/ibm-catalogs.yaml
 
 # Required for IBM MQ
 #- argocd/instances/openldap.yaml
