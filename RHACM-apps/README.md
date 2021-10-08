@@ -19,7 +19,7 @@ Deploy applications to multi cluster via Red Hat Advanced Cluster Management (RH
     oc login --token=<token> --server=<server>
     ```
 
-2. apply the follow command in this folder.
+2. Apply the below command in this folder.
 
     ```bash
     oc apply -k .
