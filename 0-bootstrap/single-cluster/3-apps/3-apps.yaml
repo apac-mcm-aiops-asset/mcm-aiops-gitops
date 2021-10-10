@@ -22,6 +22,11 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: openshift-gitops
     server: https://kubernetes.default.svc
+  # Imported Clusters NameSpaces
+  - namespace: ocp-swinney-io
+    server: https://kubernetes.default.svc
+  - namespace: syd-ibmcloud
+    server: https://kubernetes.default.svc 
   clusterResourceWhitelist:
   # TODO: SCC needs to be moved to 1-infra, here for now pipeline sa for buildah
   - group: "security.openshift.io"

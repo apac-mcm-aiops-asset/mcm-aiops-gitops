@@ -23,7 +23,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 - [APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`](#apac-mcm--aiops-gitops-asset-aka-automating-the-plumbing)
   - [Table of contents](#table-of-contents)
   - [Pre-requisites](#pre-requisites)
-    - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
+    - [Red Hat OpenShift Hub cluster](#red-hat-openshift-hub-cluster)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)
   - [Setup git repositories](#setup-git-repositories)
