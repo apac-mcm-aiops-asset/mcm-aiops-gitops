@@ -273,3 +273,34 @@ rules:
       - operator.open-cluster-management.io
     resources:
       - multiclusterhubs
+  - verbs:
+      - '*'
+    apiGroups:
+      - internal.open-cluster-management.io
+    resources:
+      - managedclusterinfos
+  - verbs:
+      - '*'
+    apiGroups:
+      - cluster.open-cluster-management.io
+    resources:
+      - '*'
+  - verbs:
+      - '*'
+    apiGroups:
+      - project.openshift.io
+    resources:
+      - projects
+  - verbs:
+      - '*'
+    apiGroups:
+      - agent.open-cluster-management.io
+    resources:
+      - klusterletaddonconfigs
+  - verbs:
+      - '*'
+    apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - validatingwebhookconfigurations
+      - mutatingwebhookconfigurations
