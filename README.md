@@ -81,6 +81,16 @@ To get an entitlement key:
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
     ```
+
+- A **Secret** containing the entitlement key is created in the `ibm-cp4mcm` namespace.
+
+    ```bash
+    oc new-project ibm-cp4mcm || true
+    oc create secret docker-registry ibm-entitlement-key -n ibm-cp4mcm \
+    --docker-username=cp \
+    --docker-password="<entitlement_key>" \
+    --docker-server=cp.icr.io
+    ```
 It is highly recommended that you utilise SealedSecrets for the Entitlement Key and the Steps will walk you through "sealing" the key from prying eyes.
 
 ## Setup git repositories
@@ -117,7 +127,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
     ```bash
     cd mcm-aiops-gitops
-    GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
+    GIT_ORG=<GIT_ORG> GIT_BRANCH=example ./scripts/set-git-source.sh
     git commit -m "Update Git URl and branch references"
     git push origin master
     ```

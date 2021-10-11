@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ibm-cp4mcm-namespace
+  name: namespace-ibm-cp4mcm
   labels:
     gitops.tier.layer: infra
   annotations:

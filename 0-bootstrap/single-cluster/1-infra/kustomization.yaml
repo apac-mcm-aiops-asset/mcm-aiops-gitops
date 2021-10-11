@@ -9,11 +9,12 @@ resources:
 #- argocd/namespace-cloudpak.yaml
 #- argocd/namespace-istio-system.yaml
 #- argocd/namespace-openldap.yaml
-- argocd/namespace-sealed-secrets.yaml
-#- argocd/namespace-tools.yaml
-#- argocd/namespace-openshift-storage.yaml
-- argocd/namespace-openshift-acm.yaml
-#- argocd/storage.yaml
+# - argocd/namespace-sealed-secrets.yaml
+# - argocd/namespace-tools.yaml
+# - argocd/namespace-openshift-storage.yaml
+# - argocd/namespace-openshift-acm.yaml
+# - argocd/namespace-ibm-cp4mcm.yaml
+# - argocd/storage.yaml
 #- argocd/infraconfig.yaml
 #- argocd/machinesets.yaml
 patches:

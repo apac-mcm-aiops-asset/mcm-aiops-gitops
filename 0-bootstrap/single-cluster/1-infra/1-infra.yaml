@@ -42,6 +42,8 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: open-cluster-management
     server: https://kubernetes.default.svc
+  - namespace: ibm-cp4mcm
+    server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: ""
     kind: Namespace
