@@ -25,7 +25,7 @@ patches:
   patch: |-
     - op: add
       path: /spec/source/repoURL
-      value: https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-infra.git
+      value: ${GIT_BASEURL}/${GIT_ORG}/${GIT_GITOPS_INFRA}
     - op: add
       path: /spec/source/targetRevision
-      value: example
+      value: ${GIT_GITOPS_BRANCH}
