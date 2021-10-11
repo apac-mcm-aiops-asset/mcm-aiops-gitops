@@ -23,6 +23,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 - [APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`](#apac-mcm--aiops-gitops-asset-aka-automating-the-plumbing)
   - [Table of contents](#table-of-contents)
   - [Pre-requisites](#pre-requisites)
+    - [Note!](#note!)
     - [Red Hat OpenShift Hub cluster](#red-hat-openshift-hub-cluster)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)
@@ -38,17 +39,29 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Pre-requisites
 
+### Note!
+
+It is assumed that you have already configured the networks, storage, Security Groups, Firewall, VPC, etc to enable the platform to be deployed. The playbook will not
+perform those actions for you, and will fail if you attempt to deploy.
+
 ### Red Hat OpenShift Hub cluster
 
-An OpenShift v4.7+ cluster is required 
+An OpenShift v4.7+ cluster is required
+
+The playbook has the ability to configure an opiniontated golden topology for the following Platforms 
 - [Azure](https://github.com/ibm-cloud-architecture/terraform-openshift4-azure)
 - [AWS](https://github.com/ibm-cloud-architecture/terraform-openshift4-aws)
-- [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
 - [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware) * VMWare IPI can also be used.
-- [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd) 
-- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm) * Requires RHACM 2.4 (ETA Q4 21)
-- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc) * Requires RHACM 2.4 (ETA Q4 21)
-- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs) * Requires RHACM 2.4 (ETA Q4 21)
+- [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd)
+
+You can use the following platforms, but you will need to configure some services yourself.
+- [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
+- [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
+
+Requires Red Hat Advanced Cluster Management Version 2.4 (ETA Q4 21)
+- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
+- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
+- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
 
 ### CLI tools
 - Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console. 
