@@ -225,23 +225,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     git push origin
     ```
 
-5. Retrieve the IBM Cloud Pak Platform Navigator console URL and admin password.
-
-    ```bash
-    # Verify the Common Services instance has been deployed successfully
-    oc get commonservice common-service -n ibm-common-services -o=jsonpath='{.status.phase}'
-    # Expected output = Succeeded
-
-    # Verify the Platform Navigator instance has been deployed successfully
-    oc get platformnavigator -n tools -o=jsonpath='{ .items[*].status.conditions[].status }'
-    # Expected output = True
-    
-    # 
-    oc get route -n tools integration-navigator-pn -o template --template='https://{{.spec.host}}'
-    oc extract -n ibm-common-services secrets/platform-auth-idp-credentials --keys=admin_username,admin_password --to=-
-    ```
-
-6. Complete Manual Steps to Import vSphere and IBM Cloud OpenShift Clusters to Red Hat Advanced Cluster Management * Needs to be automated in the future *
+5. Complete Manual Steps to Import vSphere and IBM Cloud OpenShift Clusters to Red Hat Advanced Cluster Management (To be automated in the future)
 
     ```bash
     OCP-VSPHERE="ocp-swinney-io"
