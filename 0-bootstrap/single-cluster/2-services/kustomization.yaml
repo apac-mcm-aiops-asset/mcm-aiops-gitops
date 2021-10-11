@@ -11,7 +11,7 @@ resources:
 # - argocd/instances/ibm-foundational-services-instance.yaml
 # - argocd/operators/ibm-automation-foundation-core-operator.yaml
 # - argocd/operators/ibm-automation-foundation-operator.yaml
-# - argocd/operators/ibm-common-services-mcm.yaml
+- argocd/operators/ibm-common-services-mcm.yaml
 
 # IBM Catalogs
 # - argocd/operators/ibm-catalogs.yaml
@@ -23,7 +23,7 @@ resources:
 #- argocd/instances/cert-manager-instance.yaml
 
 # Sealed Secrets
-# - argocd/instances/sealed-secrets.yaml
+- argocd/instances/sealed-secrets.yaml
 
 # CICD
 #- argocd/operators/grafana-operator.yaml
@@ -35,7 +35,7 @@ resources:
 #- argocd/instances/sonarqube.yaml
 #- argocd/instances/pact-broker.yaml
 # In OCP 4.7+ we need to install openshift-pipelines and possibly privileged scc to the pipeline serviceaccount
-# - argocd/operators/openshift-pipelines.yaml
+- argocd/operators/openshift-pipelines.yaml
 
 # Service Mesh
 #- argocd/operators/elasticsearch.yaml
@@ -45,10 +45,10 @@ resources:
 #- argocd/instances/openshift-service-mesh-instance.yaml
 
 # MultiCloud Management / Red Hat Advanced Cluster Management
-# - argocd/operators/openshift-acm.yaml
-# - argocd/instances/openshift-acm-instance.yaml
-# - argocd/operators/ibm-cp4mcm-operator.yaml
-# - argocd/instances/ibm-cp4mcm-instance.yaml
+- argocd/operators/openshift-acm.yaml
+- argocd/instances/openshift-acm-instance.yaml
+- argocd/operators/ibm-cp4mcm-operator.yaml
+- argocd/instances/ibm-cp4mcm-instance.yaml
 
 patches:
 - target:
