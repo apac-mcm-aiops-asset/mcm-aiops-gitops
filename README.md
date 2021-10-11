@@ -140,7 +140,7 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
     ```bash
     cd mcm-aiops-gitops
-    GIT_ORG=<GIT_ORG> GIT_BRANCH=example ./scripts/set-git-source.sh
+    GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
     git commit -m "Update Git URl and branch references"
     git push origin master
     ```
@@ -179,15 +179,16 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
 
 ### Tasks:
 
-1. Deploy the ArgoCD Bootstrap Application.
-    ```bash
-    GITOPS_PROFILE="0-bootstrap/single-cluster"
-    oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
-    ```
-2. Retrieve the ArgoCD/GitOps URL and admin password:
+1. Retrieve the ArgoCD/GitOps URL and admin password and log into the UI
     ```bash
     oc get route -n openshift-gitops openshift-gitops-cntk-server -o template --template='https://{{.spec.host}}'
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
+    ```
+
+2. Deploy the ArgoCD Bootstrap Application.
+    ```bash
+    GITOPS_PROFILE="0-bootstrap/single-cluster"
+    oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
     ```
 
 ## The resources to be deployed
