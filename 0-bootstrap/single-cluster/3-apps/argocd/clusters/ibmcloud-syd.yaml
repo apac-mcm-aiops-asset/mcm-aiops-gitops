@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: apps-cluster-ibmcloud-syd
   annotations:
-    argocd.argoproj.io/sync-wave: "300"
+    argocd.argoproj.io/sync-wave: "350"
   labels:
     gitops.tier.layer: applications
   finalizers:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: cluster/import/managed-clusters/ibmcloud/syd-ibmcloud
+    path: clusters/import/managed-clusters/ibmcloud/syd-ibmcloud
   syncPolicy:
     automated:
       prune: true

@@ -1,5 +1,6 @@
 resources:
 # Imported Clusters
+- argocd/clusters/policies.yaml
 - argocd/clusters/ibmcloud-syd.yaml
 - argocd/clusters/ocp-swinney-io.yaml
 

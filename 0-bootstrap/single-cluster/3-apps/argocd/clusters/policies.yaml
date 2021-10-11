@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-cluster-ocp-swinney-io
+  name: apps-clusters-policies
   annotations:
-    argocd.argoproj.io/sync-wave: "350"
+    argocd.argoproj.io/sync-wave: "300"
   labels:
     gitops.tier.layer: applications
   finalizers:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: clusters/import/managed-clusters/vsphere/ocp-swinney-io
+    path: clusters/policies
   syncPolicy:
     automated:
       prune: true
