@@ -304,3 +304,10 @@ rules:
     resources:
       - validatingwebhookconfigurations
       - mutatingwebhookconfigurations
+  - verbs:
+      - create
+      - update
+    apiGroups:
+      - cluster.open-cluster-management.io
+    resources:
+      - managedclusters
