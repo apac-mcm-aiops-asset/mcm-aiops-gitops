@@ -1,6 +1,6 @@
 resources:
 # Set RHACM Policies
-- argocd/clusters/policies.yaml
+- argocd/policies/policies.yaml
 
 # Import Existing Clusters
 - argocd/clusters/ibmcloud-syd.yaml
