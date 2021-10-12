@@ -1,6 +1,8 @@
 resources:
-# Imported Clusters
+# Set RHACM Policies
 - argocd/clusters/policies.yaml
+
+# Import Existing Clusters
 - argocd/clusters/ibmcloud-syd.yaml
 - argocd/clusters/ocp-swinney-io.yaml
 
