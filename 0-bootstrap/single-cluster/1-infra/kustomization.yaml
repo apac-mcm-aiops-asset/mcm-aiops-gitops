@@ -15,6 +15,7 @@ resources:
 - argocd/namespace-openshift-acm.yaml
 - argocd/namespace-openshift-acm-policies.yaml
 - argocd/namespace-ibm-cp4mcm.yaml
+- argocd/namespace-ibm-cp4i-argocd.yaml
 - argocd/storage.yaml
 - argocd/infraconfig.yaml
 - argocd/machinesets.yaml
