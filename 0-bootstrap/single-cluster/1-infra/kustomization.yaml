@@ -6,6 +6,8 @@ resources:
 #- argocd/namespace-openldap.yaml
 - argocd/namespace-sealed-secrets.yaml
 - argocd/namespace-tools.yaml
+# Observability
+- argocd/namespace-turbonomic.yaml
 - argocd/namespace-instana-agent.yaml
 # RHACM
 - argocd/namespace-openshift-acm.yaml

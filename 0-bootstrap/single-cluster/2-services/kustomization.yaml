@@ -43,7 +43,8 @@ resources:
 - argocd/operators/ibm-cp4mcm-operator.yaml
 - argocd/instances/ibm-cp4mcm-instance.yaml
 
-# Monitoring
+# Observability
+- argocd/operators/turbonomic.yaml
 - argocd/instances/instana-agent.yaml
 
 patches:
