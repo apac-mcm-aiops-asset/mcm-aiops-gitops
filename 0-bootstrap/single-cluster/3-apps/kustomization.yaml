@@ -3,10 +3,17 @@ resources:
 - argocd/policies/policies.yaml
 
 # Import Existing Clusters
-- argocd/clusters/ibmcloud-syd.yaml
-- argocd/clusters/ocp-swinney-io.yaml
+- argocd/clusters/import/ibmcloud/ibmcloud-syd.yaml
+- argocd/clusters/import/vsphere/ocp-swinney-io.yaml
 
-# Created Cluster
+# Create Clusters
+# - argocd/clusters/create/aws/aws-singapore.yaml
+# - argocd/clusters/create/aws/aws-tokoyo.yaml
+# - argocd/clusters/create/azure/azure-australia.yaml
+# - argocd/clusters/create/vsphere/vsphere.yaml
+
+# Deploy Applications to Managed Clusters
+# - argocd/cloudpaks/cp4i.yaml
 
 patches:
 - target:
