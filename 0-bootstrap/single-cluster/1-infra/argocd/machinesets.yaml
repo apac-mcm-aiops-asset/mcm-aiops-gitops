@@ -27,6 +27,8 @@ spec:
           cloud:
             region: ${REGION}
             image: ${IMAGE_NAME}
+          cloudpakNodes:
+            nodeCount: 1
           # only for "vsphere" - ignored for other
           vsphere:
             networkName: ${VS_NETWORK}
