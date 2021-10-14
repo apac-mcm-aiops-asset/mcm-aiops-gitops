@@ -85,7 +85,7 @@ To get an entitlement key:
     2. Select the **View library** option to verify your entitlement(s). 
     3. Select the **Get entitlement key** to retrieve the key.
 
-- A **Secret** containing the entitlement key is created in the `tools` namespace. 
+- A **Secret** containing the entitlement key is created in the `tools` namespace.  DO WE NEED THIS STEPS???
 
     ```bash
     oc new-project tools || true
@@ -104,7 +104,6 @@ To get an entitlement key:
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
     ```
-It is highly recommended that you utilise SealedSecrets for the Entitlement Key and the Steps will walk you through "sealing" the key from prying eyes.
 
 ## Setup git repositories
 
@@ -249,3 +248,42 @@ It is highly recommended that you utilise SealedSecrets for the Entitlement Key 
     oc apply -f ${OCP-IBMCLOUD}-klusterlet-crd.yaml
     oc apply -f ${OCP-IBMCLOUD}-managed-cluster-import.yaml
     ```
+
+6. Deploy new Clusters to AWS/Azure and Deploy Cloud Pak for Integration to them. All done via ArgoCD. FIX THIS SECTION.
+
+Some manual steps are required at this point, but the aim is to use Ansible Tower to perform pre and post configuration in the future.
+
+   ```bash
+   # Log into Managed Cluster via oc login
+   oc login --token=<token> --server=<server> 
+
+   # Clone the cp4i-cloudpak/multi-tenancy-gitops repository
+   git clone git@github.com:cp4i-cloudpak/multi-tenancy-gitops.git
+
+   cd multi-tenancy-gitops
+   ./scripts/infra-mod.sh
+
+   # Create an IBM Entitlement Secret within the tools namespace
+   
+   ## To get an entitlement key:
+   ## 1. Log in to https://myibm.ibm.com/products-services/containerlibrary with an IBMid and password associated with the entitled software.  
+   ## 2. Select the **View library** option to verify your entitlement(s). 
+   ## 3. Select the **Get entitlement key** to retrieve the key.
+
+    oc new-project tools || true
+    oc create secret docker-registry ibm-entitlement-key -n tools \
+    --docker-username=cp \
+    --docker-password="<entitlement_key>" \
+    --docker-server=cp.icr.io
+
+   ``` 
+
+7. Instana Agent Configuration
+
+The prerequisites to install the Instana agent are:
+
+Store your Instana Agent Key in a secret in the instana-agent namespace. The secret key field should contain key and the value contains your Instana Agent Key. Modify the instana-agent.agent.keysSecret value in the instances\instana-agent\values.yaml file to match the secret you deployed.
+
+Modify the instana-agent.cluster.name value in the instances\instana-agent\values.yaml file which represents the name that will be assigned to this cluster in Instana.
+
+Modify the instana-agent.zone.name value in the instances\instana-agent\values.yaml file which is the custom zone that detected technologies will be assigned to.
