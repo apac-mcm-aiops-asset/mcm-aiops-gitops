@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-cluster-aws-tokyo
+  name: apps-cluster-azure-aus
   annotations:
     argocd.argoproj.io/sync-wave: "350"
   labels:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: clusters/cluster-build/aws/aws-tokyo/
+    path: clusters/cluster-build/azure/azure-aus/
   syncPolicy:
     automated:
       prune: true

@@ -1,29 +1,31 @@
-# APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`
+# Zero Touch Provisioning for IBM Cloud Pak across the Multi-cloud
 
-This playbook will walk you through automating a `Platform` that provides deployment of OpenShift/Kubernetes Clusters, Virtual Machines and Applications across a Public, Private and Hybrid Cloud.
+## Elevator Pitch
 
-![Automate the Plumbing](doc/images/automate-the-plumbing.png)
+This asset is our opinionated implementation of the GitOps principles, using the latest and greatest tooling available, to enable our customers to hit one big red button (figuratively) to start provisioning a platform that provides Cluster and Virtual Machine Provisioning capabilities, Governence and policy management, observability of Clusters and workloads and finally deployment of IBM Cloud Paks, all within a single command*. Codified, Repeatable and Auditable.
 
-The playbook is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own. Whilst all efforts have been made to provide a complete `Automate the Plumbing` playbook, it may not suit every environment and your mileage may vary.
+WHAT IT LOOKS LIKE!
 
-This asset has been built on the shoulders of giants and leverages the great work done by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) team. Without the efforts done by the Cloud Native Toolkit - GitOps Productions Deployment Guide team, then this asset would have struggled to get off the ground. The hope is for one day in the future our efforts to be merged back into the original code base from which this fork was created.
+![ZTP](doc/images/automate-the-plumbing.png)
 
-This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
+The asset is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own.
 
-This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties. 
+Whilst all efforts have been made to provide a complete `Zero Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
 
-The instructions and examples are focused around the [Red Hat OpenShift](https://cloud.redhat.com/learn/what-is-openshift) platform and [IBM Cloud Pak for MultiCloud Management](https://www.ibm.com/cloud/paks) and [IBM Cloud Pak for AIOps](https://www.ibm.com/cloud/paks).
+### Shout outs
 
-The GitOps concept originated from [Weaveworks](https://www.weave.works/) back in 2017 and the goal was to automate the operations of a Kubernetes (K8s) system using a model external to the system as the source of truth ([History of GitOps](https://www.weave.works/blog/the-history-of-gitops)).
+This asset has been built on the shoulders of giants and leverages the great work and effort undertaken by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) and [IBM Garage TSA](https://github.com/ibm-garage-tsa/cp4mcm-installer) teams. Without those efforts, then this asset would have struggled to get off the ground.
 
 The reference architecture for this GitOps workflow can be found [here](https://cloudnativetoolkit.dev/adopting/use-cases/gitops/gitops-ibm-cloud-paks/).  
 
 ## Table of contents
 
-- [APAC MCM / AIOps GitOps Asset aka `Automating the Plumbing`](#apac-mcm--aiops-gitops-asset-aka-automating-the-plumbing)
+- [Zero Touch Provisioning](#zero-touch-provisioning-for-ibm-cloud-pak-across-the-multi-cloud)
+  - [Elevator Pitch](#elevator-pitch)
+  - [Shout outs](#shout-outs)
   - [Table of contents](#table-of-contents)
   - [Pre-requisites](#pre-requisites)
-    - [Note!](#note!)
+    - [Note](#note)
     - [Red Hat OpenShift Hub cluster](#red-hat-openshift-hub-cluster)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)
@@ -39,53 +41,82 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Pre-requisites
 
-### Note!
+### Note
 
-It is assumed that you have already configured the networks, storage, Security Groups, Firewall, VPC, etc to enable the platform to be deployed. The playbook will not
-perform those actions for you, and will fail if you attempt to deploy.
+This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
 
-### Red Hat OpenShift Hub cluster
+This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties.
 
-An OpenShift v4.7+ cluster is required
+It is assumed that you have already configured the compute, networks, storage, Security Groups, Firewalls, VPC, etc to enable the platform to be deployed. The asset will not
+perform those actions for you, and it will fail if you attempt to deploy it without those all pre-configured.
 
-The playbook has the ability to configure an opiniontated golden topology for the following Platforms 
+### Red Hat OpenShift cluster
+
+Minimum OpenShift v4.7+ is required.
+
+Firstly, build a "bare-bones" Red Hat OpenShift cluster using either IPI (Installer Provisioned Infrastructure), UPI (User Provisioned Infrastructure) methods or a Managed OpenShift offering like IBM Cloud - ROKS.
+
+#### IPI Methods
+
+- [AWS](https://docs.openshift.com/container-platform/4.7/installing/installing_aws/installing-aws-default.html)
+- [Azure](https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-default.html)
+- [VMWare](https://docs.openshift.com/container-platform/4.7/installing/installing_vsphere/installing-vsphere-installer-provisioned.html)
+
+#### UPI Methods
+
+Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise the following Github repositories to assist you with your UPI install of OpenShift.
+
 - [Azure](https://github.com/ibm-cloud-architecture/terraform-openshift4-azure)
 - [AWS](https://github.com/ibm-cloud-architecture/terraform-openshift4-aws)
-- [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware) * VMWare IPI can also be used.
+- [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware)
 - [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd)
-
-You can use the following platforms, but you will need to configure some services yourself.
-- [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
 - [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
 
-Requires Red Hat Advanced Cluster Management Version 2.4 (ETA Q4 21)
+#### Managed OpenShift
+
+- [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
+
+#### Future Platforms
+
+The following platforms can be used as a Hub Cluster once Red Hat Advanced Cluster Management Version 2.4 becomes GA (ETA Q4 21)
+
 - [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
 - [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
 - [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
 
 ### CLI tools
-- Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console. 
+
+- Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console.
+
     <details>
     <summary>Download oc cli</summary>
 
     ![oc cli](doc/images/oc-cli.png)
     </details>
+
+- Install kubeseal from brew.sh
+
+   ```bash
+   brew install kubeseal
+   ```
+
 - Log in from a terminal window.
+
     ```bash
     oc login --token=<token> --server=<server>
     ```
 
 ### IBM Entitlement Key
 
-- The `IBM Entitlement Key` is required to pull IBM Cloud Pak specific container images from the IBM Entitled Registry.
+- An `IBM Entitlement Key` is required to pull IBM Cloud Pak specific container images from the IBM Entitled Registry.
 
 To get an entitlement key:
 
-    1. Log in to [MyIBM Container Software Library](https://myibm.ibm.com/products-services/containerlibrary) with an IBMid and password associated with the entitled software.  
-    2. Select the **View library** option to verify your entitlement(s). 
-    3. Select the **Get entitlement key** to retrieve the key.
+1. Log in to [MyIBM Container Software Library](https://myibm.ibm.com/products-services/containerlibrary) with an IBMid and password associated with the entitled software.  
+2. Select the **View library** option to verify your entitlement(s).
+3. Select the **Get entitlement key** to retrieve the key.
 
-- A **Secret** containing the entitlement key is created in the `tools` namespace.  DO WE NEED THIS STEPS???
+- Create a **Secret** containing the entitlement key within the `tools` namespace.  DO WE NEED THIS STEPS???
 
     ```bash
     oc new-project tools || true
@@ -95,7 +126,7 @@ To get an entitlement key:
     --docker-server=cp.icr.io
     ```
 
-- A **Secret** containing the entitlement key is created in the `ibm-cp4mcm` namespace.
+- Create a **Secret** containing the entitlement key within the `ibm-cp4mcm` namespace.
 
     ```bash
     oc new-project ibm-cp4mcm || true
@@ -108,18 +139,23 @@ To get an entitlement key:
 ## Setup git repositories
 
 - The following set of Git repositories will be used for our GitOps workflow.  
+
     - Main GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops)): This repository contains all the ArgoCD Applications for  the `infrastructure`, `services` and `application` layers.  Each ArgoCD Application will reference a specific K8s resource (yaml resides in a separate git repository), contain the configuration of the K8s resource, and determine where it will be deployed into the cluster.  
+
     - Infrastructure GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-infra](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-infra)): Contains the YAMLs for cluster-wide and/or infrastructure related K8s resources managed by a cluster administrator.  This would include `namespaces`, `clusterroles`, `clusterrolebindings`, `machinesets` to name a few.
+
     - Services GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-services](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-services)): Contains the YAMLs for K8s resources which will be used by the `application` layer.  This could include `subscriptions` for Operators, YAMLs of custom resources provided, or Helm Charts for tools provided by a third party.  These resource would usually be managed by the Administrator(s) and/or a DevOps team supporting application developers.
-    - Apps GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps)): Contains the YAMLs for K8s resources to deploy `applications`.
+
+    - Apps GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps)): Contains the YAMLs for K8s resources to deploy `applications`. Within this asset, we treat Managed OpenShift clusters as `applications`.
+
     - VM repository : Contains the YAMLs for deploying Virtual Machines.
 
-### Tasks: 
+### Tasks:
 
-1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch). 
+1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch).
 2. From each template repository, click the `Use this template` button and create a copy of the repository in your new GitHub Organization.
     ![Create repository from a template](doc/images/git-repo-template-button.png)
-3. Clone the repositories locally. 
+3. Clone the repositories locally.
 
     ```bash
     mkdir -p gitops-repos
@@ -146,7 +182,7 @@ To get an entitlement key:
 
 ## Install and configure OpenShift GitOps
 
-- [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.7/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources. 
+- [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.7/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources.
 
 ### Tasks:
 
