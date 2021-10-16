@@ -305,12 +305,17 @@ rules:
       - validatingwebhookconfigurations
       - mutatingwebhookconfigurations
   - verbs:
-      - create
-      - update
+      - '*' 
     apiGroups:
       - cluster.open-cluster-management.io
     resources:
-      - managedclusters
+      - '*'
+  - verbs:
+      - '*'
+    apiGroups:
+      - clusterview.open-cluster-management.io
+    resources:
+      - '*'
   - verbs:
       - '*'
     apiGroups:

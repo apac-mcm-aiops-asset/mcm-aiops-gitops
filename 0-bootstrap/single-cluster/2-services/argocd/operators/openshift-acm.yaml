@@ -16,6 +16,14 @@ spec:
   project: services
   source:
     path: operators/openshift-acm
+    helm:
+      values: |
+        rhacm:
+          enabled: true
+          config:
+            operatorGroupName: rhacm-operator-group
+            namespace: open-cluster-management
+            version: 2.2
   syncPolicy:
     automated:
       prune: true

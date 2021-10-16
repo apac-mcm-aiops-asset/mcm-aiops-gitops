@@ -1,12 +1,12 @@
-# Zero Touch Provisioning for IBM Cloud Pak across the Multi-cloud
+# Zero Touch Provisioning for IBM Cloud Pak across Multi Cloud
 
 ## Elevator Pitch
 
 This asset is our opinionated implementation of the GitOps principles, using the latest and greatest tooling available, to enable our customers to hit one big red button (figuratively) to start provisioning a platform that provides Cluster and Virtual Machine Provisioning capabilities, Governence and policy management, observability of Clusters and workloads and finally deployment of IBM Cloud Paks, all within a single command*. Codified, Repeatable and Auditable.
 
-WHAT IT LOOKS LIKE!
+![ZTP](doc/images/ztp.png)
+*Disclaimer, may actually be more than just one command to type. ;)
 
-![ZTP](doc/images/automate-the-plumbing.png)
 
 The asset is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own.
 
@@ -122,16 +122,6 @@ To get an entitlement key:
 1. Log in to [MyIBM Container Software Library](https://myibm.ibm.com/products-services/containerlibrary) with an IBMid and password associated with the entitled software.  
 2. Select the **View library** option to verify your entitlement(s).
 3. Select the **Get entitlement key** to retrieve the key.
-
-- Create a **Secret** containing the entitlement key within the `tools` namespace.  DO WE NEED THIS STEPS???
-
-    ```bash
-    oc new-project tools || true
-    oc create secret docker-registry ibm-entitlement-key -n tools \
-    --docker-username=cp \
-    --docker-password="<entitlement_key>" \
-    --docker-server=cp.icr.io
-    ```
 
 - Create a **Secret** containing the entitlement key within the `ibm-cp4mcm` namespace.
 
@@ -269,15 +259,37 @@ To get an entitlement key:
     git push origin
     ```
 
-5. Manually Patch MCM
+5. Manually Patch MCM (Necessary due to MCM not playing nicely with ArgoCD)
 
    ```bash
    export ENTITLED_REGISTRY_SECRET=<entitlement_key>
 
    ./scripts/cp4mcm-post-install.sh
    ```
+6. Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to review the resources that can be deployed.
 
-5. Complete Manual Steps to Import vSphere and IBM Cloud OpenShift Clusters to Red Hat Advanced Cluster Management (To be automated in the future)
+  * We have provided a number of examples that can be copied to Create and Import IaaS Providers within MCM and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
+
+  * Creating and/or Importing IaaS Providers within MultiCloud Management
+  
+     * Details to follow.
+  
+  * Creating Clusters within Red Hat Advanced Cluster Management
+
+     * We have have provided examples which can be used to deploy new clusters. These examples require the use of your Cloud Provider "keys" to allow RHACM to connect to your Cloud and deploy via Terraform an OpenShift cluster. We utilise SealedSecrets to encrypt your "keys" and have provided a handy script within the `Application` repo for your use.
+
+  * Importing Clusters into Red Hat Advanced Cluster Management
+  
+     * Red Hat Advanced Cluster Management 2.2 lacks the use of the Discovery Service that's available within RHACM 2.3. This does mean that manual steps are required to be able to import existing OpenShift clusters. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual. Once we upgrade this asset to support RHAMC 2.3, we can reduce these manual steps.
+
+     * An example of how you can perform the final steps of importing a cluster can be seen below. The use of OpenShift GitOps is used to firstly create all the resources needed by RHACM to perform an import, then once completed, you would follow the remaining steps. The aim in the future would be to automate these steps.
+
+     * Uncomment the clusters you wish to import from `Application` [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) file. 
+
+    ![importclusterexample](doc/images/importclustersexample.png)
+
+    * OpenShift GitOps will then begin the Import routine, and once synced, complete the remaining steps listed below.
+
 
     ```bash
     OCP-VSPHERE="ocp-swinney-io"
@@ -302,9 +314,21 @@ To get an entitlement key:
     oc apply -f ${OCP-IBMCLOUD}-managed-cluster-import.yaml
     ```
 
-6. Deploy new Clusters to AWS/Azure and Deploy Cloud Pak for Integration to them. All done via ArgoCD. FIX THIS SECTION.
+    * Within a few minutes your Imported Clusters will show within RHACM.
 
-Some manual steps are required at this point, but the aim is to use Ansible Tower to perform pre and post configuration in the future.
+    ![importedclusterexample](doc/images/importedclusterfinished.png)
+
+7. The asset has been configured so that any OpenShift cluster that is imported or created, will be automatically configured with OpenShift GitOps and deployed with a custom ArgoCD controller.
+   
+    * This has been done to continue our GitOps approach within Managed Clusters. This is achieved through the use of Policies, which are automatically loaded into RHACM, which in turns uses these to ensure OpenShift GitOps is installed and remains installed in the event of accidently deletion.
+
+8. The Managed Clusters are now ready for the deployment of Applications, again this is managed through OpenShift GitOps.
+
+    * We will use IBM Cloud Pak for Integration (CP4i) as an example Application that can be deployed onto your Managed Clusters. As mentioned previously, we re-use the GitOps approach, and utilise OpenShift GitOps to configure the cluster ready for CP4i, through deploying OpenShift Container Storage, creating Nodes with the correct CPU and Memory, installing the necessary services and tools, and finally, deploy CP4i with MQ and ACE.
+
+    * There is a few minor manual steps which need to be completed, and that is preparing the CP4i respository with your Cloud details and adding the IBM Cloud Pak Entitlement Secret into the Managed Cluster. In future, we aim to automate this step via SealedSecrets, Vault and Ansible Tower.
+
+    We will re-use the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) repositories and it is assumed you have already configured these repostories by following the very comprehensive guide put together by that team. That configuration is beyond the scope of this asset.
 
    ```bash
    # Log into Managed Cluster via oc login
@@ -328,8 +352,7 @@ Some manual steps are required at this point, but the aim is to use Ansible Towe
     --docker-username=cp \
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
-
-   ``` 
+   ```
 
 7. Instana Agent Configuration
 

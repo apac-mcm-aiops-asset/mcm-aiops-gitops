@@ -14,8 +14,10 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: cloudpaks/cp4i
+    path: tenents/cloudpaks/cp4i
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+          - CreateNamespace=true

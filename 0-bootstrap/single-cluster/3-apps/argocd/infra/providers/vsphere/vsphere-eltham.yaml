@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cntk-consolelink
-  labels:
-    gitops.tier.layer: infra
+  name: apps-infra-provider-vsphere-eltham
   annotations:
-    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-wave: "300"
+  labels:
+    gitops.tier.layer: applications
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: openshift-gitops
     server: https://kubernetes.default.svc
-  project: infra
+  project: applications
   source:
-    path: consolelink
+    path: infra/providers/vsphere/vsphere-eltham/
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
