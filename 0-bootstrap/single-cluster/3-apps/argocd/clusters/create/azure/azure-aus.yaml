@@ -17,5 +17,5 @@ spec:
     path: clusters/cluster-build/azure/azure-aus/
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true

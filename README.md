@@ -100,6 +100,13 @@ The following platforms can be used as a Hub Cluster once Red Hat Advanced Clust
    brew install kubeseal
    ```
 
+- Install cloudctl
+
+   ```bash
+   wget https://github.com/IBM/cloud-pak-cli/releases/latest/download/cloudctl-darwin-amd64.tar.gz
+   tar -xzf cloudctl-darwin-amd64.tar.gz
+   ``` 
+
 - Log in from a terminal window.
 
     ```bash
@@ -134,6 +141,7 @@ To get an entitlement key:
     --docker-username=cp \
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
+    --docker-email=myemail@ibm.com
     ```
 
 ## Setup git repositories
@@ -176,6 +184,7 @@ To get an entitlement key:
     ```bash
     cd mcm-aiops-gitops
     GIT_ORG=<GIT_ORG> GIT_BRANCH=master ./scripts/set-git-source.sh
+    git add .
     git commit -m "Update Git URl and branch references"
     git push origin master
     ```
@@ -186,7 +195,7 @@ To get an entitlement key:
 
 ### Tasks:
 
-1. Install the OpenShift GitOps Operator, create a `ClusterRole` and deploy a default instance of ArgoCD.  
+1. Install the OpenShift GitOps Operator and create a `ClusterRole` and `ClusterRoleBinding`.  
 
     ```bash
     oc apply -f setup/ocp47/
@@ -194,20 +203,20 @@ To get an entitlement key:
     while ! oc wait pod --timeout=-1s --for=condition=Ready -l '!job-name' -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
-2. Delete the default ArgoCD instance
-
-    ```bash
-    oc delete gitopsservice cluster -n openshift-gitops || true
-    oc delete argocd openshift-gitops -n openshift-gitops || true
-    ```
-
-3. Create a custom ArgoCD instance with custom checks
+2. Create a custom ArgoCD instance with custom checks
 
     ```bash
     oc apply -f setup/ocp47/argocd-instance/ -n openshift-gitops
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
+### Configure manifests for Infrastructrure
+
+1. Configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
+
+   ```bash
+   ./scripts/infra-mod.sh
+   ```
 ## Bootstrap the OpenShift cluster
 
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
@@ -259,6 +268,14 @@ To get an entitlement key:
     git commit -m "initial bootstrap setup"
     git push origin
     ```
+
+5. Manually Patch MCM
+
+   ```bash
+   export ENTITLED_REGISTRY_SECRET=<entitlement_key>
+
+   ./scripts/cp4mcm-post-install.sh
+   ```
 
 5. Complete Manual Steps to Import vSphere and IBM Cloud OpenShift Clusters to Red Hat Advanced Cluster Management (To be automated in the future)
 

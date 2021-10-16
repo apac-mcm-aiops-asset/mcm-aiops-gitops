@@ -17,5 +17,5 @@ spec:
     path: clusters/import/managed-clusters/ibmcloud/syd-ibmcloud
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true

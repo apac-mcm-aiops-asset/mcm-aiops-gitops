@@ -24,13 +24,25 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: policy
     server: https://kubernetes.default.svc
-  # Imported Clusters NameSpaces
-  - namespace: ocp-swinney-io
-    server: https://kubernetes.default.svc
-  - namespace: syd-ibmcloud
-    server: https://kubernetes.default.svc 
+  ## Imported Clusters NameSpaces
+  ## Include the namespaces of any clusters you wish to import here
+  ## Examples have been provided below
+  #
+  #- namespace: ocp-swinney-io
+  #  server: https://kubernetes.default.svc
+  #- namespace: syd-ibmcloud
+  #  server: https://kubernetes.default.svc 
+  #
+  ## Created Clusters
+  ## Include the namespaces of any clusters you create here
+  ## Examples have been provided below
+  #
+  #- namespace: aws-tokyo
+  #  server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   # TODO: SCC needs to be moved to 1-infra, here for now pipeline sa for buildah
+  - group: ""
+    kind: Namespace
   - group: ""
     kind: RoleBinding
   - group: apiextensions.k8s.io
@@ -45,6 +57,8 @@ spec:
     kind: ManagedCluster
   - group: "project.openshift.io"
     kind: Project
+  - group: "apps.open-cluster-management.io"
+    kind: PlacementRule
   roles:
   # A role which provides read-only access to all applications in the project
   - name: read-only

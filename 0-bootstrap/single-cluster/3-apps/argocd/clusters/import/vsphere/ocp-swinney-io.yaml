@@ -17,5 +17,5 @@ spec:
     path: clusters/import/managed-clusters/vsphere/ocp-swinney-io
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
