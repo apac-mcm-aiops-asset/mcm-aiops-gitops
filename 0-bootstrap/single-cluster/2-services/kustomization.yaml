@@ -37,6 +37,7 @@ resources:
 - argocd/instances/openshift-acm-instance.yaml
 - argocd/operators/ibm-cp4mcm-operator.yaml
 - argocd/instances/ibm-cp4mcm-instance.yaml
+- argocd/instances/ibm-cp4mcm-postinstall.yaml
 
 # Observability
 - argocd/operators/turbonomic.yaml

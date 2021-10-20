@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: ibm-cp4mcm-postinstall-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "100"
+  labels:
+    gitops.tier.group: ibm-cloudpak
+    gitops.tier.layer: services
+spec:
+  template:
+    spec:
+      containers:
+      - name: cp4mcm-postinstall
+        image: quay.io/congxdev/cp4mcm-ldap:2.3
+      restartPolicy: Never
+  backoffLimit: 2
