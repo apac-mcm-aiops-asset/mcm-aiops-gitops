@@ -135,7 +135,7 @@ To get an entitlement key:
     oc create secret docker-registry ibm-entitlement-key -n ibm-cp4mcm \
     --docker-username=cp \
     --docker-password="<entitlement_key>" \
-    --docker-server=cp.icr.io
+    --docker-server=cp.icr.io \
     --docker-email=myemail@ibm.com
     ```
 

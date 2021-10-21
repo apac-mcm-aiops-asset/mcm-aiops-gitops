@@ -23,7 +23,7 @@ resources:
 #- argocd/operators/grafana-operator.yaml
 #- argocd/instances/grafana-instance.yaml
 # In OCP 4.7+ we need to install openshift-pipelines and possibly privileged scc to the pipeline serviceaccount
-- argocd/operators/openshift-pipelines.yaml
+# - argocd/operators/openshift-pipelines.yaml
 
 # Service Mesh
 #- argocd/operators/elasticsearch.yaml
@@ -39,7 +39,7 @@ resources:
 - argocd/instances/ibm-cp4mcm-instance.yaml
 
 # Observability
-- argocd/operators/turbonomic.yaml
+# - argocd/operators/turbonomic.yaml
 #- argocd/instances/instana-agent.yaml
 
 patches:
