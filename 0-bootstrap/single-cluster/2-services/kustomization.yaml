@@ -51,10 +51,10 @@ patches:
   patch: |-
     - op: add
       path: /spec/source/repoURL
-      value: ${GIT_BASEURL}/${GIT_ORG}/${GIT_GITOPS_SERVICES}
+      value: https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-services.git
     - op: add
       path: /spec/source/targetRevision
-      value: ${GIT_GITOPS_SERVICES_BRANCH}
+      value: example
 - target:
     group: argoproj.io
     kind: Application
@@ -62,7 +62,7 @@ patches:
   patch: |-
     - op: add
       path: /spec/source/repoURL
-      value: ${HELM_REPOURL}
+      value: https://charts.cloudnativetoolkit.dev
 - target:
     name: ibm-automation-foundation-operator
   patch: |-
