@@ -20,19 +20,24 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Table of contents
 
-- [Zero Touch Provisioning](#zero-touch-provisioning-for-ibm-cloud-pak-across-the-multi-cloud)
+- [Zero Touch Provisioning for IBM Cloud Pak across Multi Cloud](#zero-touch-provisioning-for-ibm-cloud-pak-across-multi-cloud)
   - [Elevator Pitch](#elevator-pitch)
-  - [Shout outs](#shout-outs)
+    - [Shout outs](#shout-outs)
   - [Table of contents](#table-of-contents)
   - [Pre-requisites](#pre-requisites)
     - [Note](#note)
-    - [Red Hat OpenShift Hub cluster](#red-hat-openshift-hub-cluster)
+    - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
+      - [IPI Methods](#ipi-methods)
+      - [UPI Methods](#upi-methods)
+      - [Managed OpenShift](#managed-openshift)
+      - [Future Platforms](#future-platforms)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)
   - [Setup git repositories](#setup-git-repositories)
     - [Tasks:](#tasks)
   - [Install and configure OpenShift GitOps](#install-and-configure-openshift-gitops)
     - [Tasks:](#tasks-1)
+    - [Configure manifests for Infrastructrure](#configure-manifests-for-infrastructrure)
   - [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
     - [Tasks:](#tasks-2)
   - [The resources to be deployed](#the-resources-to-be-deployed)
@@ -202,11 +207,12 @@ To get an entitlement key:
 
 ### Configure manifests for Infrastructrure
 
-1. Configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
+If you are running a managed OpenShift cluster on IBM Cloud, you can deploy OpenShift Data Foundation as an add-on https://cloud.ibm.com/docs/openshift?topic=openshift-ocs-storage-prep#odf-deploy-options. Otherwise, on AWS, Azure, vSphere, run the following script to configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
 
    ```bash
    ./scripts/infra-mod.sh
    ```
+
 ## Bootstrap the OpenShift cluster
 
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
