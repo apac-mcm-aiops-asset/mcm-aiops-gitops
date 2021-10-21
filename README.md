@@ -246,7 +246,7 @@ To use MCM with Infrastructure Management, use the following users with the pass
 
 ```sh
 POD=$(oc -n ldap get pod -l app=ldap -o jsonpath="{.items[0].metadata.name}")
-execlog oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
+oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
 ```
 
 To use MCM without Infrastucture Manageme, the default `admin` password is:
