@@ -40,6 +40,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
     - [Configure manifests for Infrastructrure](#configure-manifests-for-infrastructrure)
   - [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
     - [Tasks:](#tasks-2)
+    - [Credentials](#credentials)
   - [The resources to be deployed](#the-resources-to-be-deployed)
     - [Tasks:](#tasks-3)
 
@@ -230,6 +231,29 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
     GITOPS_PROFILE="0-bootstrap/single-cluster"
     oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
     ```
+
+### Credentials
+
+After MCM and RHACM have been installed successfully - all apps are synced in ArgoCD,
+
+The route to CP4MCM is
+
+```sh
+oc -n ibm-common-services get route cp-console --template '{{.spec.host}}'
+```
+
+To use MCM with Infrastructure Management, use the following users with the password `Passw0rd`.
+
+```sh
+POD=$(oc -n ldap get pod -l app=ldap -o jsonpath="{.items[0].metadata.name}")
+execlog oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
+```
+
+To use MCM without Infrastucture Manageme, the default `admin` password is:
+
+```sh
+oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d
+```
 
 ## The resources to be deployed
 
