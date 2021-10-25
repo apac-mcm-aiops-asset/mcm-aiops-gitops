@@ -12,7 +12,7 @@ The asset is not intended to be used straight into Production, and a lot of assu
 
 Whilst all efforts have been made to provide a complete `Zero Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
 
-### Shout outs
+## Shout outs
 
 This asset has been built on the shoulders of giants and leverages the great work and effort undertaken by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) and [IBM Garage TSA](https://github.com/ibm-garage-tsa/cp4mcm-installer) teams. Without those efforts, then this asset would have struggled to get off the ground.
 
