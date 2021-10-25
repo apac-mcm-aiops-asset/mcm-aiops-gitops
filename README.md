@@ -249,7 +249,7 @@ POD=$(oc -n ldap get pod -l app=ldap -o jsonpath="{.items[0].metadata.name}")
 oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
 ```
 
-To use MCM without Infrastucture Manageme, the default `admin` password is:
+To use MCM without Infrastucture Management, the default `admin` password is:
 
 ```sh
 oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d
@@ -259,9 +259,9 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
 - The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
 
-- The asset is set to automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
+- The asset is set to semi-automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
 
-- Additionally, the asset will automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
+- Additionally, the asset can automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
 
 - Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
 
@@ -289,14 +289,7 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
     git push origin
     ```
 
-5. Manually Patch MCM (Necessary due to MCM not playing nicely with ArgoCD)
-
-   ```bash
-   export ENTITLED_REGISTRY_SECRET=<entitlement_key>
-
-   ./scripts/cp4mcm-post-install.sh
-   ```
-6. Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to review the resources that can be deployed.
+5. Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to review the resources that can be deployed.
 
   * We have provided a number of examples that can be copied to Create and Import IaaS Providers within MCM and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
 
@@ -348,11 +341,11 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
     ![importedclusterexample](doc/images/importedclusterfinished.png)
 
-7. The asset has been configured so that any OpenShift cluster that is imported or created, will be automatically configured with OpenShift GitOps and deployed with a custom ArgoCD controller.
+6. The asset has been configured so that any OpenShift cluster that is imported or created, will be automatically configured with OpenShift GitOps and deployed with a custom ArgoCD controller.
    
     * This has been done to continue our GitOps approach within Managed Clusters. This is achieved through the use of Policies, which are automatically loaded into RHACM, which in turns uses these to ensure OpenShift GitOps is installed and remains installed in the event of accidently deletion.
 
-8. The Managed Clusters are now ready for the deployment of Applications, again this is managed through OpenShift GitOps.
+7. The Managed Clusters are now ready for the deployment of Cloud Paks, again this is managed through OpenShift GitOps.
 
     * We will use IBM Cloud Pak for Integration (CP4i) as an example Application that can be deployed onto your Managed Clusters. As mentioned previously, we re-use the GitOps approach, and utilise OpenShift GitOps to configure the cluster ready for CP4i, through deploying OpenShift Container Storage, creating Nodes with the correct CPU and Memory, installing the necessary services and tools, and finally, deploy CP4i with MQ and ACE.
 
@@ -383,13 +376,3 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
    ```
-
-7. Instana Agent Configuration
-
-The prerequisites to install the Instana agent are:
-
-Store your Instana Agent Key in a secret in the instana-agent namespace. The secret key field should contain key and the value contains your Instana Agent Key. Modify the instana-agent.agent.keysSecret value in the instances\instana-agent\values.yaml file to match the secret you deployed.
-
-Modify the instana-agent.cluster.name value in the instances\instana-agent\values.yaml file which represents the name that will be assigned to this cluster in Instana.
-
-Modify the instana-agent.zone.name value in the instances\instana-agent\values.yaml file which is the custom zone that detected technologies will be assigned to.
