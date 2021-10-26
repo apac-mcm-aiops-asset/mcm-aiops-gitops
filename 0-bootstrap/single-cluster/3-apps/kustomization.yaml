@@ -2,6 +2,13 @@ resources:
 # Set RHACM Policies
 - argocd/policies/policies.yaml
 
+## Create RHACM Providers
+## Include any Private or Public Cloud Providers you may have
+## Examples have been provided
+#- argocd/infra/providers/rhacm/aws/aws-aus.yaml
+#- argocd/infra/providers/rhacm/azure/azure-aus.yaml
+#- argocd/infra/providers/rhacm/vsphere/vsphere-eltham.yaml
+
 ## Import Existing Clusters
 ## Include the Clusters you wish to import below
 ## Examples have been provided
