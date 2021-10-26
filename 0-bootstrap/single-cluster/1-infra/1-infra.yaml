@@ -49,6 +49,8 @@ spec:
   - namespace: ibm-cp4i-argocd
     server: https://kubernetes.default.svc
   - namespace: turbonomic
+    server: https://kubernetes.default.svc
+  - namespace: openshift-rhacm-providers
     server: https://kubernetes.default.svc 
   clusterResourceWhitelist:
   - group: ""

@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespace-openshift-rhacm-providers
+  labels:
+    gitops.tier.layer: infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+spec:
+  destination:
+    namespace: openshift-rhacm-providers
+    server: https://kubernetes.default.svc
+  project: infra
+  source:
+    path: namespaces/openshift-rhacm-providers
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
