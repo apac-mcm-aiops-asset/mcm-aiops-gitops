@@ -17,5 +17,5 @@ spec:
     path: infra/providers/rhacm/azure/azure-aus/
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true

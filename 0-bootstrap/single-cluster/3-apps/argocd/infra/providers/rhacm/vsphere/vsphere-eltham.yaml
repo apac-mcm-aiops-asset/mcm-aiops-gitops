@@ -17,5 +17,5 @@ spec:
     path: infra/providers/rhacm/vsphere/vsphere-eltham/
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true

@@ -17,7 +17,7 @@ spec:
     path: tenents/cloudpaks/cp4i
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
     syncOptions:
           - CreateNamespace=true
