@@ -1,6 +1,6 @@
 resources:
-# Set RHACM Policies
-- argocd/policies/policies.yaml
+# Set RHACM to install ArgoCD on Mnaged Clusters for "Last Mile" Configuration
+- argocd/managed-argocd/managed-argocd.yaml
 
 ## Create RHACM Providers
 ## Include any Private or Public Cloud Providers you may have

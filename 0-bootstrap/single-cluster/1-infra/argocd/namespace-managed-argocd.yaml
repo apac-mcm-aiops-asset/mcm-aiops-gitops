@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-policies-namespace
+  name: managed-argocd-namespace
   labels:
     gitops.tier.layer: infra
   annotations:
     argocd.argoproj.io/sync-wave: "100"
 spec:
   destination:
-    namespace: open-cluster-management
+    namespace: managed-argocd
     server: https://kubernetes.default.svc
   project: infra
   source:
-    path: namespaces/cluster-policies
+    path: namespaces/managed-argocd
   syncPolicy:
     automated:
       prune: true
