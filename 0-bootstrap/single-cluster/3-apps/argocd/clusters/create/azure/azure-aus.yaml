@@ -6,8 +6,10 @@ metadata:
     argocd.argoproj.io/sync-wave: "350"
   labels:
     gitops.tier.layer: applications
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+# Due to Bug within RHACM 2.2 and ArgoCD, this needs to be commented out to allow a clean removal.
+# Issue raised to track
+#  finalizers:
+#    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: openshift-gitops
