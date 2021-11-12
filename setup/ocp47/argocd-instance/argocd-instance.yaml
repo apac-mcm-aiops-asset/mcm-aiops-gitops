@@ -193,11 +193,12 @@ spec:
       requests:
         cpu: 250m
         memory: 512Mi
-  rbac:
-    defaultPolicy: 'role:readonly'
-    policy: |
-       g, system:cluster-admins, role:admin
-    scopes: '[groups]'
+  rbac: {}
+  # rbac:
+  #   defaultPolicy: 'role:readonly'
+  #   policy: |
+  #      g, system:cluster-admins, role:admin
+  #   scopes: '[groups]'
   repo:
     resources:
       limits:
@@ -222,7 +223,7 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
-    openShiftOAuth: true
+    # openShiftOAuth: true
   ha:
     enabled: false
     resources:
