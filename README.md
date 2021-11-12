@@ -206,6 +206,12 @@ To get an entitlement key:
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
+3. Configure TLS on IBM Cloud ROKS
+
+    ```bash
+    scripts/patch-argocd-tls.sh
+    ```
+
 ### Configure manifests for Infrastructrure
 
 If you are running a managed OpenShift cluster on IBM Cloud, you can deploy OpenShift Data Foundation as an add-on https://cloud.ibm.com/docs/openshift?topic=openshift-ocs-storage-prep#odf-deploy-options. Otherwise, on AWS, Azure, vSphere, run the following script to configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
