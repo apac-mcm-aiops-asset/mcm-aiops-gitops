@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: ibm-cp4mcm-instance
   annotations:
-    argocd.argoproj.io/sync-wave: "299"
+    argocd.argoproj.io/sync-wave: "290"
   labels:
     gitops.tier.group: ibm-cloudpak
     gitops.tier.layer: services
