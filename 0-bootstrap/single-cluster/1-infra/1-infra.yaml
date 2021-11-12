@@ -44,6 +44,8 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: ibm-infra-automation
     server: https://kubernetes.default.svc
+  - namespace: managed-argocd
+    server: https://kubernetes.default.svc
   - namespace: policy
     server: https://kubernetes.default.svc
   - namespace: ibm-cp4i-argocd
