@@ -229,13 +229,14 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
 1. Retrieve the ArgoCD/GitOps URL and admin password and log into the UI
     ```bash
     oc get route -n openshift-gitops openshift-gitops-cntk-server -o template --template='https://{{.spec.host}}'
+    
+    # Passsword is not needed if Log In via OpenShift is used (default)
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
 
 2. Deploy the ArgoCD Bootstrap Application.
     ```bash
-    GITOPS_PROFILE="0-bootstrap/single-cluster"
-    oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
+    oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
     ```
 
 ### Credentials
