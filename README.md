@@ -158,8 +158,9 @@ To get an entitlement key:
 
 1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch).
 2. From each template repository, click the `Use this template` button and create a copy of the repository in your new GitHub Organization.
+   Note: Make sure the repositories are public so that ArgoCD can access them.      
+
     ![Create repository from a template](doc/images/git-repo-template-button.png)
-    Note: Make sure the repositories are public so that ArgoCD can access them.      
 3. Clone the repositories locally.
 
     ```bash
