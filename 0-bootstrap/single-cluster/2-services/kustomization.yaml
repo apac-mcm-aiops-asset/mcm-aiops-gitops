@@ -57,7 +57,7 @@ patches:
       value: https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-services.git
     - op: add
       path: /spec/source/targetRevision
-      value: aiops-3.2
+      value: aiops-3.2-roks
 - target:
     group: argoproj.io
     kind: Application

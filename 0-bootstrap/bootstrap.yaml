@@ -11,7 +11,7 @@ spec:
   source:
     path: 0-bootstrap/single-cluster
     repoURL: https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops.git
-    targetRevision: aiops-3.2
+    targetRevision: aiops-3.2-roks
   syncPolicy:
     automated:
       prune: true
