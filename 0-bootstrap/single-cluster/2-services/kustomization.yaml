@@ -4,7 +4,7 @@ resources:
 # - argocd/instances/ibm-foundational-services-instance.yaml
 # - argocd/operators/ibm-automation-foundation-core-operator.yaml
 # - argocd/operators/ibm-automation-foundation-operator.yaml
-- argocd/operators/ibm-common-services-mcm-operator.yaml
+- argocd/operators/ibm-common-services-mcm.yaml
 - argocd/instances/ibm-common-services-mcm-instance.yaml
 
 # IBM Catalogs
