@@ -246,6 +246,26 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
     ```bash
     oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
     ```
+4. Once the 1-infra layer has been deployed, then edit
+   ```
+   0-bootstrap/single-cluster/kustomization.yaml
+   ```
+   and uncomment line 5, to deploy the 2-services layer, e.g.
+   ```yaml
+   resources:
+   - 1-infra/1-infra.yaml
+   ## Uncomment 2-services/2-services.yaml once
+   ## 1-infra/1-infra.yaml has been completed
+   - 2-services/2-services.yaml
+   ## Uncomment to deploy Clusters and Applications
+   ## Must be done after all steps for 1-infra & 2-services
+   ## have been completed.
+   # - 3-apps/3-apps.yaml
+   ```
+5. Deploy the ArgoCD Bootstrap Application again, this time the services will be applied.
+    ```bash
+    oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
+    ```
 
 ### Credentials
 
