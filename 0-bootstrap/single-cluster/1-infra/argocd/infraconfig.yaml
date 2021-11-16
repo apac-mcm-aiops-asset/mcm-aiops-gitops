@@ -19,8 +19,8 @@ spec:
       values: |
         refarch-infraconfig:
           cloudProvider:
-            name: "${PLATFORM}" # set to aws or vsphere,
-            managed: "${MANAGED}" # set to true for ARO or ROSA
+            name: "azure" # set to aws or vsphere,
+            managed: "false" # set to true for ARO or ROSA
           argo:
             namespace: openshift-gitops
             serviceAccount: openshift-gitops-cntk-argocd-application-controller

@@ -168,6 +168,23 @@ spec:
           hs.message = obj.status.state
         end
         return hs
+    operator.ibm.com/CommonService:
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.phase ~= nil then
+            hs.message = obj.status.phase
+            if obj.status.phase == "Succeeded" then
+              hs.status = "Healthy"
+            else
+              hs.status = "Progressing"
+            end
+            return hs
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Unknown"
+        return hs
     mq.ibm.com/QueueManager:
       health.lua: |
         hs = {}
@@ -194,6 +211,11 @@ spec:
         cpu: 250m
         memory: 512Mi
   rbac: {}
+  # rbac:
+  #   defaultPolicy: 'role:readonly'
+  #   policy: |
+  #      g, system:cluster-admins, role:admin
+  #   scopes: '[groups]'
   repo:
     resources:
       limits:
@@ -218,6 +240,7 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
+    # openShiftOAuth: true
   ha:
     enabled: false
     resources:

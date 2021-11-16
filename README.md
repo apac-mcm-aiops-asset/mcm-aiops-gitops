@@ -129,11 +129,11 @@ To get an entitlement key:
 2. Select the **View library** option to verify your entitlement(s).
 3. Select the **Get entitlement key** to retrieve the key.
 
-- Create a **Secret** containing the entitlement key within the `ibm-cp4mcm` namespace.
+- Create a **Secret** containing the entitlement key within the `ibm-infra-automation` namespace.
 
     ```bash
-    oc new-project ibm-cp4mcm || true
-    oc create secret docker-registry ibm-entitlement-key -n ibm-cp4mcm \
+    oc new-project ibm-infra-automation || true
+    oc create secret docker-registry ibm-entitlement-key -n ibm-infra-automation \
     --docker-username=cp \
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io \
@@ -208,6 +208,12 @@ To get an entitlement key:
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
+3. Configure TLS on IBM Cloud ROKS
+
+    ```bash
+    scripts/patch-argocd-tls.sh
+    ```
+
 ### Configure manifests for Infrastructrure
 
 If you are running a managed OpenShift cluster on IBM Cloud, you can deploy OpenShift Data Foundation as an add-on https://cloud.ibm.com/docs/openshift?topic=openshift-ocs-storage-prep#odf-deploy-options. Otherwise, on AWS, Azure, vSphere, run the following script to configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
@@ -225,33 +231,34 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
 1. Retrieve the ArgoCD/GitOps URL and admin password and log into the UI
     ```bash
     oc get route -n openshift-gitops openshift-gitops-cntk-server -o template --template='https://{{.spec.host}}'
+    
+    # Passsword is not needed if Log In via OpenShift is used (default)
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
 
 2. Deploy the ArgoCD Bootstrap Application.
     ```bash
-    GITOPS_PROFILE="0-bootstrap/single-cluster"
-    oc apply -f ${GITOPS_PROFILE}/bootstrap.yaml
+    oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
     ```
 
 ### Credentials
 
-After MCM and RHACM have been installed successfully - all apps are synced in ArgoCD,
+After Infrastructure Automation and RHACM have been installed successfully - all apps are synced in ArgoCD,
 
-The route to CP4MCM is
+The route to IBM Infrastructure Automation is
 
 ```sh
 oc -n ibm-common-services get route cp-console --template '{{.spec.host}}'
 ```
 
-To use MCM with Infrastructure Management, use the following users with the password `Passw0rd`.
+To use Infrastructure Automation, use the following users with the password `Passw0rd`.
 
 ```sh
 POD=$(oc -n ldap get pod -l app=ldap -o jsonpath="{.items[0].metadata.name}")
 oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
 ```
 
-To use MCM without Infrastucture Management, the default `admin` password is:
+To use Infrastucture Automation, the default `admin` password is:
 
 ```sh
 oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d
