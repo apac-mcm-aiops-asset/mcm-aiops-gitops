@@ -235,8 +235,14 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
     # Passsword is not needed if Log In via OpenShift is used (default)
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
+2. The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your 
+    Git Organization if you have not already done so. However, you can review and modify the resources deployed by editing the following;
+     ```
+     0-bootstrap/single-cluster/1-infra/kustomization.yaml
+     0-bootstrap/single-cluster/2-services/kustomization.yaml
+     ```
 
-2. Deploy the ArgoCD Bootstrap Application.
+3. Deploy the ArgoCD Bootstrap Application.
     ```bash
     oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
     ```
@@ -265,8 +271,6 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 ```
 
 ## The resources to be deployed
-
-- The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so and the resources selected in the [infrastructure](0-bootstrap/single-cluster/1-infra/kustomization.yaml) and [services](0-bootstrap/single-cluster/2-services/kustomization.yaml) layers will be deployed.
 
 - The asset is set to semi-automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
 
