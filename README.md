@@ -81,7 +81,7 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
 #### Managed OpenShift
 
 - [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
-- [AWS - ROSA] (https://aws.amazon.com/rosa/)
+- [AWS - ROSA](https://aws.amazon.com/rosa/)
 
 #### Future Platforms
 
