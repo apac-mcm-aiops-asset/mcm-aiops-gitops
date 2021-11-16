@@ -35,7 +35,7 @@ patches:
   patch: |-
     - op: add
       path: /spec/source/repoURL
-      value: https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps.git
+      value: ${GIT_BASEURL}/${GIT_ORG}/${GIT_GITOPS_APPLICATIONS}
     - op: add
       path: /spec/source/targetRevision
-      value: aiops-3.2-roks
+      value: ${GIT_GITOPS_BRANCH}
