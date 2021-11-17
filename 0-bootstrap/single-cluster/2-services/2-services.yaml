@@ -42,11 +42,11 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: turbonomic
     server: https://kubernetes.default.svc
-  - namespace: minio
-    server: https://kubernetes.default.svc
   - namespace: open-cluster-management-observability
     server: https://kubernetes.default.svc
   - namespace: ibm-infra-automation
+    server: https://kubernetes.default.svc
+  - namespace: openshift-config
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   # TODO: SCC needs to be moved to 1-infra, here for now for artifactory
@@ -78,10 +78,12 @@ spec:
     kind: ClusterRoleBinding
   - group: "rbac.authorization.k8s.io"
     kind: ClusterRole
-  - group: apiextensions.k8s.io
+  - group: "apiextensions.k8s.io"
     kind: CustomResourceDefinition
-  - group: observability.open-cluster-management.io
+  - group: "observability.open-cluster-management.io"
     kind: MultiClusterObservability
+  - group: "objectbucket.io"
+    kind: objectbucketclaims
   roles:
   # A role which provides read-only access to all applications in the project
   - name: read-only
