@@ -58,15 +58,15 @@ perform those actions for you, and it will fail if you attempt to deploy it with
 
 ### Red Hat OpenShift cluster
 
-Minimum OpenShift v4.7+ is required.
+Minimum OpenShift v4.8+ is required.
 
 Firstly, build a "bare-bones" Red Hat OpenShift cluster using either IPI (Installer Provisioned Infrastructure), UPI (User Provisioned Infrastructure) methods or a Managed OpenShift offering like IBM Cloud - ROKS.
 
 #### IPI Methods
 
-- [AWS](https://docs.openshift.com/container-platform/4.7/installing/installing_aws/installing-aws-default.html)
-- [Azure](https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-default.html)
-- [VMWare](https://docs.openshift.com/container-platform/4.7/installing/installing_vsphere/installing-vsphere-installer-provisioned.html)
+- [AWS](https://docs.openshift.com/container-platform/4.8/installing/installing_aws/installing-aws-default.html)
+- [Azure](https://docs.openshift.com/container-platform/4.8/installing/installing_azure/installing-azure-default.html)
+- [VMWare](https://docs.openshift.com/container-platform/4.8/installing/installing_vsphere/installing-vsphere-installer-provisioned.html)
 
 #### UPI Methods
 
@@ -93,7 +93,7 @@ The following platforms can be used as a Hub Cluster once Red Hat Advanced Clust
 
 ### CLI tools
 
-- Install the OpenShift CLI oc (version 4.7+) .  The binary can be downloaded from the Help menu from the OpenShift Console.
+- Install the OpenShift CLI oc (version 4.8+) .  The binary can be downloaded from the Help menu from the OpenShift Console.
 
     <details>
     <summary>Download oc cli</summary>
@@ -190,14 +190,14 @@ To get an entitlement key:
 
 ## Install and configure OpenShift GitOps
 
-- [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.7/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources.
+- [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.8/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources.
 
 ### Tasks:
 
 1. Install the OpenShift GitOps Operator and create a `ClusterRole` and `ClusterRoleBinding`.  
 
     ```bash
-    oc apply -f setup/ocp47/
+    oc apply -f setup/ocp/
     while ! oc wait crd applications.argoproj.io --timeout=-1s --for=condition=Established  2>/dev/null; do sleep 30; done
     while ! oc wait pod --timeout=-1s --for=condition=Ready -l '!job-name' -n openshift-gitops > /dev/null; do sleep 30; done
     ```
@@ -205,7 +205,7 @@ To get an entitlement key:
 2. Create a custom ArgoCD instance with custom checks
 
     ```bash
-    oc apply -f setup/ocp47/argocd-instance/ -n openshift-gitops
+    oc apply -f setup/ocp/argocd-instance/ -n openshift-gitops
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
