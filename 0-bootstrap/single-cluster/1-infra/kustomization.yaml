@@ -10,8 +10,7 @@ resources:
 - argocd/namespace-instana-agent.yaml
 # RHACM
 - argocd/namespace-openshift-acm.yaml
-# - argocd/namespace-openshift-acm-minio.yaml
-# - argocd/namespace-openshift-acm-observability.yaml
+- argocd/namespace-openshift-acm-observability.yaml
 - argocd/namespace-openshift-rhacm-providers.yaml
 - argocd/namespace-managed-argocd.yaml
 # IBM Infrastruture Automation aka MCM

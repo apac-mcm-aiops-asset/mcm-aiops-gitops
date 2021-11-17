@@ -54,8 +54,6 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: openshift-rhacm-providers
     server: https://kubernetes.default.svc
-  - namespace: minio
-    server: https://kubernetes.default.svc 
   - namespace: open-cluster-management-observability
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
