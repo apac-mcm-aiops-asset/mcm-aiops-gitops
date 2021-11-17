@@ -64,16 +64,18 @@ ocpversion=$(oc get clusterversion version | grep -v NAME | awk '{print $2}')
 a=( ${ocpversion//./ } )
 majorVer="${a[0]}.${a[1]}"
 installconfig=$(oc get configmap cluster-config-v1 -n kube-system -o jsonpath='{.data.install-config}')
-if echo $installconfig|grep 'api.openshift.com/managed';then
-    managed1=$(echo "${installconfig}" | grep "api.openshift.com\/managed" | cut -d":" -f2  )
-    managed=${managed1:-"false"}
+managed1=$(echo $installconfig|grep 'api.openshift.com/managed')
+
+if [[ $managed1 =~ "true" ]]; then
+    managed=true
 else
-    managed="false"
+    managed=false
 fi
 
 infraID=$(oc get -o jsonpath='{.status.infrastructureName}' infrastructure cluster)
 platform=$(echo "${installconfig}" | grep -A1 "platform:" | grep -v "platform:" | tail -1 | cut -d":" -f1 | xargs)
 shopt -s extglob
+
 if [[ $platform == @(aws|azure|vsphere) ]]; then
     echo "Platform ${platform} is valid"
 else
@@ -100,38 +102,37 @@ else
 fi
 # platform=$(oc get -o jsonpath='{.status.platform}' infrastructure cluster | tr [:upper:] [:lower:])
 
-sed -i.bak '/machinesets.yaml/s/^#//g' kustomization.yaml
-rm kustomization.yaml.bak
-
+sed -i '' -e '/machinesets.yaml/s/^#//g' kustomization.yaml
+    
 # edit argocd/machinesets.yaml
-sed -i'.bak' -e "s#\${PLATFORM}#${platform}#" argocd/machinesets.yaml
-sed -i'.bak' -e "s#\${MANAGED}#${managed}#" argocd/machinesets.yaml
-sed -i'.bak' -e "s#\${INFRASTRUCTURE_ID}#${infraID}#" argocd/machinesets.yaml
+echo " -  Updating machinesets"
+
+# spacings are intended 
+sed -i '' -e 's#^            name.*$#            name: '${platform}'#' argocd/machinesets.yaml
+sed -i '' -e 's#.*managed.*$#            managed: '${managed}'#' argocd/machinesets.yaml
+sed -i '' -e 's#.*infrastructureId.*$#          infrastructureId: '${infraId}'#' argocd/machinesets.yaml
+
 if [[ "${platform}" == "vsphere" ]]; then
-    sed -i'.bak' -e "s#\${VS_NETWORK}#${VS_NETWORK}#" argocd/machinesets.yaml
-    sed -i'.bak' -e "s#\${VS_DATACENTER}#${VS_DATACENTER}#" argocd/machinesets.yaml
-    sed -i'.bak' -e "s#\${VS_DATASTORE}#${VS_DATASTORE}#" argocd/machinesets.yaml
-    sed -i'.bak' -e "s#\${VS_CLUSTER}#${VS_CLUSTER}#" argocd/machinesets.yaml
-    sed -i'.bak' -e "s#\${VS_SERVER}#${VS_SERVER}#" argocd/machinesets.yaml
+    sed -i '' -e 's#.*networkName.*$#            networkName: '$VS_NETWORK'#' argocd/machinesets.yaml
+    sed -i '' -e 's#.*datacenter.*$#           datacenter: '$VS_DATACENTER'#' argocd/machinesets.yaml
+    sed -i '' -e 's#.*datastore.*$#            datastore: '$VS_DATASTORE'#' argocd/machinesets.yaml
+    sed -i '' -e 's#.*cluster.*$#            cluster: '$VS_CLUSTER'#' argocd/machinesets.yaml
+    sed -i '' -e 's#.*server.*$#            server: '$VS_SERVER'#' argocd/machinesets.yaml
 else
-    sed -i'.bak' -e "s#\${REGION}#${region}#" argocd/machinesets.yaml
-    sed -i'.bak' -e "s#\${IMAGE_NAME}#${image}#" argocd/machinesets.yaml
+    sed -i '' -e 's#.*region.*$#            region: '${region}'#' argocd/machinesets.yaml
+    sed -i '' -e 's#.*image.*$#            image: '${image}'#' argocd/machinesets.yaml
 fi
 
-rm argocd/machinesets.yaml.bak
-
-
-sed -i.bak '/infraconfig.yaml/s/^#//g' kustomization.yaml
-rm kustomization.yaml.bak
+sed -i '' -e  '/infraconfig.yaml/s/^#//g' kustomization.yaml
 
 # edit argocd/infraconfig.yaml
-sed -i'.bak' -e "s#\${PLATFORM}#${platform}#" argocd/infraconfig.yaml
-sed -i'.bak' -e "s#\${MANAGED}#${managed}#" argocd/infraconfig.yaml
-rm argocd/infraconfig.yaml.bak
+echo " -  Updating infraconfig"
+sed -i '' -e 's#^            name.*$#            name: '${platform}'#' argocd/infraconfig.yaml
+sed -i '' -e 's#.*managed.*$#            managed: '${managed}'#' argocd/infraconfig.yaml
 
-sed -i.bak '/namespace-openshift-storage.yaml/s/^#//g' kustomization.yaml
-sed -i.bak '/storage.yaml/s/^#//g' kustomization.yaml
-rm kustomization.yaml.bak
+sed -i '' -e '/namespace-openshift-storage.yaml/s/^#//g' kustomization.yaml
+sed -i '' -e '/storage.yaml/s/^#//g' kustomization.yaml
+
 # edit argocd/storage.yaml
 newChannel="stable-${majorVer}"
 defsc=$(oc get sc | grep default | awk '{print $1}')
@@ -143,17 +144,18 @@ if [[ "$platform" == "aws" ]]; then
     storageClass=${defsc:-"standard"}
 fi
 
-sed -i.bak "s#\${CHANNEL}#${newChannel}#" argocd/storage.yaml
-sed -i.bak "s#\${STORCLASS}#${storageClass}#" argocd/storage.yaml
-rm argocd/storage.yaml.bak
-
+echo " -  Updating storage"
+sed -i '' -e 's#.*channel.*$#          channel: '${newChannel}'#' argocd/storage.yaml
+sed -i '' -e 's#.*storageClass.*$#          storageClass: '${storageClass}'#' argocd/storage.yaml
 
 popd
 
 pushd "${SCRIPTDIR}/.."
 
+echo "Syncing Manifests"
 ${SCRIPTDIR}/sync-manifests.sh
 
+echo "Updating Git"
 git add .
 
 git commit -m "Editing infrastructure definitions"
