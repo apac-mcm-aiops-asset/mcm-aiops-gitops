@@ -110,7 +110,7 @@ echo " -  Updating machinesets"
 # spacings are intended 
 sed -i '' -e 's#^            name.*$#            name: '${platform}'#' argocd/machinesets.yaml
 sed -i '' -e 's#.*managed.*$#            managed: '${managed}'#' argocd/machinesets.yaml
-sed -i '' -e 's#.*infrastructureId.*$#          infrastructureId: '${infraId}'#' argocd/machinesets.yaml
+sed -i '' -e 's#.*infrastructureId.*$#          infrastructureId: '${infraID}'#' argocd/machinesets.yaml
 
 if [[ "${platform}" == "vsphere" ]]; then
     sed -i '' -e 's#.*networkName.*$#            networkName: '$VS_NETWORK'#' argocd/machinesets.yaml
