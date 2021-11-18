@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: clusters/managed-argocd/subscriptions
+    path: clusters/managed-argocd/policies
   syncPolicy:
     automated:
       prune: true

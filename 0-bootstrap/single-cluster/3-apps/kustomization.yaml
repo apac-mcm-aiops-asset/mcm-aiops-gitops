@@ -2,7 +2,7 @@ resources:
 # Set RHACM to install ArgoCD on Mnaged Clusters for "Last Mile" Configuration
 - argocd/managed-argocd/managed-argocd.yaml
 
-## Creat Pipelines
+## Create Pipelines
 - argocd/pipelines/tekton-mcm-gitops.yaml
 - argocd/pipelines/tekton-mcm-providers.yaml
 

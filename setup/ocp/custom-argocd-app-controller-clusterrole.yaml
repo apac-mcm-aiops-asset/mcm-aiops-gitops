@@ -328,3 +328,28 @@ rules:
       - objectbucket.io
     resources:
       - '*'  
+  - verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - policy.open-cluster-management.io
+    resources:
+      - policies
+      - placementbindings
+  - verbs:
+      - get 
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - apps.open-cluster-management.io
+    resources:
+      - placementrules

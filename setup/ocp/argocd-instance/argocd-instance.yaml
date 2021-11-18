@@ -217,6 +217,8 @@ spec:
   #      g, system:cluster-admins, role:admin
   #   scopes: '[groups]'
   repo:
+    image: quay.io/benswinneyau/openshift-gitops-repo-server
+    version: latest
     resources:
       limits:
         cpu: '1'
@@ -250,6 +252,7 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
+  kustomizeBuildOptions: '--enable-alpha-plugins'
   tls:
     ca: {}
   redis:
