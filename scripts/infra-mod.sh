@@ -108,8 +108,8 @@ sed -i '' -e '/machinesets.yaml/s/^#//g' kustomization.yaml
 echo " -  Updating machinesets"
 
 # spacings are intended 
-sed -i '' -e 's#^            name.*$#            name: '${platform}'#' argocd/machinesets.yaml
-sed -i '' -e 's#.*managed.*$#            managed: '${managed}'#' argocd/machinesets.yaml
+sed -i '' -e '/cloudProvider:/ {' -e 'n; s/.*name.*$/            name: '${platform}'/' -e '}'  argocd/machinesets.yaml
+sed -i '' -e '/cloudProvider:/ {' -e 'n;n; s/.*managed.*$/            managed: '${managed}'/' -e '}'  argocd/machinesets.yaml
 sed -i '' -e 's#.*infrastructureId.*$#          infrastructureId: '${infraID}'#' argocd/machinesets.yaml
 
 if [[ "${platform}" == "vsphere" ]]; then
@@ -127,8 +127,8 @@ sed -i '' -e  '/infraconfig.yaml/s/^#//g' kustomization.yaml
 
 # edit argocd/infraconfig.yaml
 echo " -  Updating infraconfig"
-sed -i '' -e 's#^            name.*$#            name: '${platform}'#' argocd/infraconfig.yaml
-sed -i '' -e 's#.*managed.*$#            managed: '${managed}'#' argocd/infraconfig.yaml
+sed -i '' -e '/cloudProvider:/ {' -e 'n; s/.*name.*$/            name: '${platform}'/' -e '}'  argocd/infraconfig.yaml
+sed -i '' -e '/cloudProvider:/ {' -e 'n;n; s/.*managed.*$/            managed: '${managed}'/' -e '}'  argocd/infraconfig.yaml
 
 sed -i '' -e '/namespace-openshift-storage.yaml/s/^#//g' kustomization.yaml
 sed -i '' -e '/storage.yaml/s/^#//g' kustomization.yaml
