@@ -1,16 +1,16 @@
-# Zero Touch Provisioning for IBM Cloud Pak across Multi Cloud
+# One Touch Provisioning for IBM Cloud Pak across Multi Cloud
 
 ## Elevator Pitch
 
 This asset is our opinionated implementation of the GitOps principles, using the latest and greatest tooling available, to enable our customers to hit one big red button (figuratively) to start provisioning a platform that provides Cluster and Virtual Machine Provisioning capabilities, Governence and policy management, observability of Clusters and workloads and finally deployment of IBM Cloud Paks, all within a single command*. Codified, Repeatable and Auditable.
 
-![ZTP](doc/images/ztp.png)
+![OTP](doc/images/ztp.png)
 *Disclaimer, may actually be more than just one command to type. ;)
 
 
 The asset is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own.
 
-Whilst all efforts have been made to provide a complete `Zero Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
+Whilst all efforts have been made to provide a complete `One Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
 
 ## Shout outs
 
@@ -20,7 +20,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
 
 ## Table of contents
 
-- [Zero Touch Provisioning for IBM Cloud Pak across Multi Cloud](#zero-touch-provisioning-for-ibm-cloud-pak-across-multi-cloud)
+- [One Touch Provisioning for IBM Cloud Pak across Multi Cloud](#one-touch-provisioning-for-ibm-cloud-pak-across-multi-cloud)
   - [Elevator Pitch](#elevator-pitch)
     - [Shout outs](#shout-outs)
   - [Table of contents](#table-of-contents)
@@ -77,19 +77,14 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
 - [VMWare](https://github.com/ibm-cloud-architecture/terraform-openshift4-vmware)
 - [IBM Cloud VMWare Cloud Director](https://github.com/ibm-cloud-architecture/terraform-openshift4-vcd)
 - [GCP](https://github.com/ibm-cloud-architecture/terraform-openshift4-gcp)
+- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
+- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
+- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
 
 #### Managed OpenShift
 
 - [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
 - [AWS - ROSA](https://aws.amazon.com/rosa/)
-
-#### Future Platforms
-
-The following platforms can be used as a Hub Cluster once Red Hat Advanced Cluster Management Version 2.4 becomes GA (ETA Q4 21)
-
-- [IBM Power Systems - PowerVC](https://github.com/ocp-power-automation/ocp4-upi-powervm)
-- [IBM Power Systems - HMC](https://github.com/ocp-power-automation/ocp4-upi-powervm-hmc)
-- [IBM Cloud PowerVS](https://github.com/ocp-power-automation/ocp4-upi-powervs)
 
 ### CLI tools
 
