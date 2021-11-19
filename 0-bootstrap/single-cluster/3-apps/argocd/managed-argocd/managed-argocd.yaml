@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-managed-argocd
+  name: apps-managed-openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "300"
   labels:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: clusters/managed-argocd/policies
+    path: clusters/managed-argocd
   syncPolicy:
     automated:
       prune: true

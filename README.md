@@ -293,9 +293,9 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
 - The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Red Hat Advanced Cluster Management 2.4, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Turbonomics and RHACM Observability.
 
-- The asset is set to semi-automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
+- The asset can Auto-Discover OpenShift Clusters from provided Red Hat OpenShift Cluster Manager credentials, and provide the opportunity to import the OpenShift clusters as Managed Clusters and configure them into the OpenShift GitOps Cluster. We have retained the old option of semi-automatically importing existing OpenShift Clusters, but manual steps are still required.
 
-- Additionally, the asset can automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS, Azure or vSphere via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
+- Additionally, the asset can automatically create a connection to an account and deploy an OpenShift Cluster into AWS, Azure or vSphere via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
 
 - Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
 
@@ -325,7 +325,7 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
 5. Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to review the resources that can be deployed.
 
-  * We have provided a number of examples that can be copied to Create and Import IaaS Providers within MCM and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
+  * We have provided a number of examples that can be copied to Create and Import IaaS Providers within Infrastructure Automation and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
 
   * Creating and/or Importing IaaS Providers within IBM Infrastrucutre Automation
   
@@ -337,9 +337,9 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
   * Importing Clusters into Red Hat Advanced Cluster Management
   
-     * Red Hat Advanced Cluster Management 2.2 lacks the use of the Discovery Service that's available within RHACM 2.3. This does mean that manual steps are required to be able to import existing OpenShift clusters. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual. Once we upgrade this asset to support RHAMC 2.3, we can reduce these manual steps.
+     * Red Hat Advanced Cluster Management 2.4 makes the use of the Discovery Service, that will auto-discover and import OpenShift Clusters configured within your RHOCM account. You can still perform this action outside of the Discovery Service, but this does mean that manual steps are required. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual.
 
-     * An example of how you can perform the final steps of importing a cluster can be seen below. The use of OpenShift GitOps is used to firstly create all the resources needed by RHACM to perform an import, then once completed, you would follow the remaining steps. The aim in the future would be to automate these steps.
+     * An example of how you can perform the final steps of manually importing a cluster can be seen below. The use of OpenShift GitOps is used to firstly create all the resources needed by RHACM to perform an import, then once completed, you would follow the remaining steps. The aim in the future would be to automate these steps.
 
      * Uncomment the clusters you wish to import from `Application` [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) file. 
 
@@ -410,3 +410,5 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
     --docker-password="<entitlement_key>" \
     --docker-server=cp.icr.io
    ```
+
+   Our aim is to reduce these steps down in future releases of the asset.
