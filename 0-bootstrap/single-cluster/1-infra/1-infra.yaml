@@ -52,7 +52,7 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: turbonomic
     server: https://kubernetes.default.svc
-  - namespace: openshift-rhacm-providers
+  - namespace: openshift-rhacm-credentials
     server: https://kubernetes.default.svc
   - namespace: open-cluster-management-observability
     server: https://kubernetes.default.svc

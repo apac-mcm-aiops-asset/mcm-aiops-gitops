@@ -11,7 +11,7 @@ resources:
 # RHACM
 - argocd/namespace-openshift-acm.yaml
 - argocd/namespace-openshift-acm-observability.yaml
-- argocd/namespace-openshift-rhacm-providers.yaml
+- argocd/namespace-openshift-rhacm-credentials.yaml
 - argocd/namespace-managed-argocd.yaml
 # IBM Infrastruture Automation aka MCM
 - argocd/namespace-ibm-infra-automation.yaml

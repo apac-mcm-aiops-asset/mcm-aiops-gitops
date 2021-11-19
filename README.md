@@ -233,8 +233,9 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
     # Passsword is not needed if Log In via OpenShift is used (default)
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
-2. The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your 
-    Git Organization if you have not already done so. However, you can review and modify the resources deployed by editing the following;
+
+2. The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so. However, you can review and modify the resources deployed by editing the following:
+
      ```
      0-bootstrap/single-cluster/1-infra/kustomization.yaml
      0-bootstrap/single-cluster/2-services/kustomization.yaml
@@ -290,9 +291,11 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
 ## The resources to be deployed
 
+- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Red Hat Advanced Cluster Management 2.4, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Turbonomics and RHACM Observability.
+
 - The asset is set to semi-automatically connect OpenShift Clusters running within vSphere and IBM Cloud into Red Hat Advanced Cluster Management. These are used as examples only, and you will need to replace this configuration files with your own. --- requires RHACM >2.3 * Manual steps are required for this initial version of the asset.
 
-- Additionally, the asset can automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
+- Additionally, the asset can automatically create a connection to an AWS account and deploy an OpenShift Cluster into AWS, Azure or vSphere via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
 
 - Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
 
@@ -324,7 +327,7 @@ oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='
 
   * We have provided a number of examples that can be copied to Create and Import IaaS Providers within MCM and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
 
-  * Creating and/or Importing IaaS Providers within MultiCloud Management
+  * Creating and/or Importing IaaS Providers within IBM Infrastrucutre Automation
   
      * Details to follow.
   

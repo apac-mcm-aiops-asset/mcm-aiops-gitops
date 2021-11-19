@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-infra-provider-rhacm-aws
+  name: apps-infra-credentials-rhacm-aws
   annotations:
     argocd.argoproj.io/sync-wave: "300"
   labels:
@@ -10,7 +10,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: openshift-gitops
+    namespace: openshift-rhacm-credentials
     server: https://kubernetes.default.svc
   project: applications
   source:
