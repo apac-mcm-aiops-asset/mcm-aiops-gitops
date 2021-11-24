@@ -204,7 +204,7 @@ To get an entitlement key:
     while ! oc wait pod --timeout=-1s --for=condition=ContainersReady -l app.kubernetes.io/name=openshift-gitops-cntk-server -n openshift-gitops > /dev/null; do sleep 30; done
     ```
 
-    *Note:* We use a custom openshift-gitops-repo-server image to enable the use of Plugins within OpenShift Gitops. This is required to allow RHACM to utilise Policy Generator plugin. We have included the Dockerfile used to build this under `setup/custom-argocd-server` folder.
+    *Note:* We use a custom openshift-gitops-repo-server image to enable the use of Plugins within OpenShift Gitops. This is required to allow RHACM to utilise Policy Generator plugin. We have included the Dockerfile used to build this under `setup/custom-openshift-gitops-repo-server` folder.
 
 3. Configure TLS on IBM Cloud ROKS
 
