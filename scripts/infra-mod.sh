@@ -152,8 +152,8 @@ popd
 
 pushd "${SCRIPTDIR}/.."
 
-echo "Syncing Manifests"
-${SCRIPTDIR}/sync-manifests.sh
+#echo "Syncing Manifests"
+#${SCRIPTDIR}/sync-manifests.sh
 
 echo "Updating Git"
 git add .
