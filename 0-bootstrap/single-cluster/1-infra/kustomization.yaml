@@ -12,7 +12,7 @@ resources:
 - argocd/namespace-openshift-acm.yaml
 - argocd/namespace-openshift-acm-observability.yaml
 - argocd/namespace-openshift-rhacm-credentials.yaml
-- argocd/namespace-managed-argocd.yaml
+- argocd/namespace-policies.yaml
 # IBM Infrastruture Automation aka MCM
 - argocd/namespace-ibm-infra-automation.yaml
 #- argocd/namespace-ibm-cp4mcm.yaml
