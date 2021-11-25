@@ -7,7 +7,6 @@ This asset is our opinionated implementation of the GitOps principles, using the
 ![OTP](doc/images/ztp.png)
 *Disclaimer, may actually be more than just one command to type. ;)
 
-
 The asset is not intended to be used straight into Production, and a lot of assumptions have been made when putting this together. It's main intention is to show the `Art of the Possible`, but it can be used a base to roll your own.
 
 Whilst all efforts have been made to provide a complete `One Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
@@ -24,37 +23,54 @@ The reference architecture for this GitOps workflow can be found [here](https://
   - [Elevator Pitch](#elevator-pitch)
     - [Shout outs](#shout-outs)
   - [Table of contents](#table-of-contents)
+  - [Note](#note)
+  - [Asset Capabilities](#asset-capabilities)
   - [Pre-requisites](#pre-requisites)
     - [Note](#note)
     - [Red Hat OpenShift cluster](#red-hat-openshift-cluster)
       - [IPI Methods](#ipi-methods)
       - [UPI Methods](#upi-methods)
       - [Managed OpenShift](#managed-openshift)
-      - [Future Platforms](#future-platforms)
     - [CLI tools](#cli-tools)
     - [IBM Entitlement Key](#ibm-entitlement-key)
   - [Setup git repositories](#setup-git-repositories)
-    - [Tasks:](#tasks)
   - [Install and configure OpenShift GitOps](#install-and-configure-openshift-gitops)
-    - [Tasks:](#tasks-1)
-    - [Configure manifests for Infrastructrure](#configure-manifests-for-infrastructrure)
+    - [Configure manifests for Infrastructure](#configure-manifests-for-infrastructure)
   - [Bootstrap the OpenShift cluster](#bootstrap-the-openshift-cluster)
-    - [Tasks:](#tasks-2)
     - [Credentials](#credentials)
-  - [The resources to be deployed](#the-resources-to-be-deployed)
-    - [Tasks:](#tasks-3)
+    - [Infrastructure Automation](#infrastructure-automation)
+    - [Red Hat Advanced Cluster Management](#red-hat-advanced-cluster-management) 
+  - [Managing OpenShift Clusters via OpenShift GitOps](#managing-openShift-clusters-via-openShift-gitOps)
+  - [Managing IaaS Providers within IBM Infrastructure Automation](#managing-iaas-providers-within-ibm-infrastructure-automation)
+  - [Deployment of Cloud Paks through OpenShift GitOps](#deployment-of-cloud-paks-through-openShift-gitOps)
+  
+## Note
 
+This repository provides an opinionated point of view on how tooling and principles such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems. It takes into account the various personas interacting with the system and accounts for separation of duties.
 
-## Pre-requisites
-
-### Note
+It is assumed that you have already configured the compute, networks, storage, Security Groups, Firewalls, VPC, etc to enable the platform to be deployed. The asset will not perform those actions for you, and it will fail if you attempt to deploy it without those all pre-configured.
 
 This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
 
-This repository provides an opinionated point of view on how tooling such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems.  It takes into account the various personas interacting with the system and accounts for separation of duties.
+## Asset Capabilities
 
-It is assumed that you have already configured the compute, networks, storage, Security Groups, Firewalls, VPC, etc to enable the platform to be deployed. The asset will not
-perform those actions for you, and it will fail if you attempt to deploy it without those all pre-configured.
+- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
+
+- Deployment of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments.
+
+- Configured to Auto-Discover OpenShift Clusters from provided Red Hat OpenShift Cluster Manager credentials, and provide the opportunity to import the OpenShift clusters as Managed Clusters and automatically configure them into the OpenShift GitOps Cluster.
+
+- Centalised OpenShift GitOps for deployment of Applications across any Managed OpenShift Cluster. View all deployed Applications across the entire fleet of OpenShift Clusters, regardless of Clusters location (i.e. AWS, GCP, on-premise etc).
+
+- Automatically apply policies and governance to ALL Clusters within Red Hat Advanced Cluster Management, regardless of Clusters location.
+
+- Hub Cluster can self-host Instana Virtual Machine using OpenShift Virtualisation and managed via OpenShift GitOps, or automatically deployed to an IaaS environment using IBM Infrastructure Automation.
+
+- Can be configured to automatically connect to IaaS environments, enable deployment of Virtual Machines via IBM Infrastructure Automation and OpenShift Pipelines.
+
+- Can be configured to automatically deploy applications to Managed Clusters via OpenShift GitOps. An example provided will deploy IBM Cloud Pak for Integration (utilising full GitOps Principles) to Managed Clusters.
+
+## Pre-requisites
 
 ### Red Hat OpenShift cluster
 
@@ -148,15 +164,13 @@ To get an entitlement key:
 
     - Apps GitOps repository ([https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps](https://github.com/apac-mcm-aiops-asset/mcm-aiops-gitops-apps)): Contains the YAMLs for K8s resources to deploy `applications`. Within this asset, we treat Managed OpenShift clusters as `applications`.
 
-    - VM repository : Contains the YAMLs for deploying Virtual Machines.
-
-### Tasks:
-
 1. Create a new GitHub Organization using instructions from this [GitHub documentation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch).
+
 2. From each template repository, click the `Use this template` button and create a copy of the repository in your new GitHub Organization.
-   Note: Make sure the repositories are public so that ArgoCD can access them.      
+   Note: Make sure the repositories are public so that ArgoCD can access them.
 
     ![Create repository from a template](doc/images/git-repo-template-button.png)
+
 3. Clone the repositories locally.
 
     ```bash
@@ -187,8 +201,6 @@ To get an entitlement key:
 
 - [Red Hat OpenShift GitOps](https://docs.openshift.com/container-platform/4.8/cicd/gitops/understanding-openshift-gitops.html) uses [Argo CD](https://argoproj.github.io/argo-cd/), an open-source declarative tool, to maintain and reconcile cluster resources.
 
-### Tasks:
-
 1. Install the OpenShift GitOps Operator and create a `ClusterRole` and `ClusterRoleBinding`.  
 
     ```bash
@@ -212,9 +224,9 @@ To get an entitlement key:
     scripts/patch-argocd-tls.sh
     ```
 
-### Configure manifests for Infrastructrure
+### Configure manifests for Infrastructure
 
-If you are running a managed OpenShift cluster on IBM Cloud, you can deploy OpenShift Data Foundation as an add-on https://cloud.ibm.com/docs/openshift?topic=openshift-ocs-storage-prep#odf-deploy-options. Otherwise, on AWS, Azure, vSphere, run the following script to configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
+If you are running a managed OpenShift cluster on IBM Cloud, you can deploy OpenShift Data Foundation as an [add-on](https://cloud.ibm.com/docs/openshift?topic=openshift-ocs-storage-prep#odf-deploy-options). Otherwise, on AWS, Azure, GCP and vSphere run the following script to configure the machinesets, infra nodes and storage definitions for the `Cloud` you are using for the Hub Cluster
 
    ```bash
    ./scripts/infra-mod.sh
@@ -224,9 +236,8 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
 
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
 
-### Tasks:
-
 1. Retrieve the ArgoCD/GitOps URL and admin password and log into the UI
+
     ```bash
     oc get route -n openshift-gitops openshift-gitops-cntk-server -o template --template='https://{{.spec.host}}'
     
@@ -234,22 +245,25 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
     oc extract secrets/openshift-gitops-cntk-cluster --keys=admin.password -n openshift-gitops --to=-
     ```
 
-2. The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so. However, you can review and modify the resources deployed by editing the following:
+2. The resources required to be deployed for this asset have been pre-selected, and you should just need to clone the `mcm-aiops-gitops` repository in your Git Organization if you have not already done so. However, you can review and modify the resources deployed by editing the following.
 
      ```
      0-bootstrap/single-cluster/1-infra/kustomization.yaml
      0-bootstrap/single-cluster/2-services/kustomization.yaml
      ```
 
-3. Deploy the ArgoCD Bootstrap Application.
+  If you choose to disable any Infrastructure or Services resources before the Initial Bootstrap, you will need to re-commit those changes back to your Git repository, otherwise they will not be picked up by OpenShift GitOps.
+
+3. Deploy the OpenShift GitOps Bootstrap Application.
+
     ```bash
     oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
     ```
-4. Once the 1-infra layer has been deployed, then edit
-   ```
-   0-bootstrap/single-cluster/kustomization.yaml
-   ```
-   and uncomment line 5, to deploy the 2-services layer, e.g.
+
+4. Its recommended to deploy the Infrastructure components, then the Service Componenets once complete. ArgoCD Sync waves are used to managed the order of manifest deployments, but we have seen occassions where applying both the Infrastructure and Services layers at the same time can fail. YMMV.
+
+Once the Infrastructure layer has been deployed, update the `0-bootstrap/single-cluster/kustomization.yaml` manifest to enable the Services layer and commit to Git. OpenShift GitOps will then automatically deploy the Services.
+
    ```yaml
    resources:
    - 1-infra/1-infra.yaml
@@ -261,14 +275,12 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
    ## have been completed.
    # - 3-apps/3-apps.yaml
    ```
-5. Deploy the ArgoCD Bootstrap Application again, this time the services will be applied.
-    ```bash
-    oc apply -f 0-bootstrap/single-cluster/bootstrap.yaml
-    ```
 
 ### Credentials
 
-After Infrastructure Automation and RHACM have been installed successfully - all apps are synced in ArgoCD,
+After Infrastructure Automation and RHACM have been installed successfully - all apps are synced in ArgoCD.
+
+#### Infrastructure Automation
 
 The route to IBM Infrastructure Automation is
 
@@ -283,132 +295,153 @@ POD=$(oc -n ldap get pod -l app=ldap -o jsonpath="{.items[0].metadata.name}")
 oc -n ldap exec $POD -- ldapsearch -LLL -x -H ldap:// -D "cn=admin,dc=ibm,dc=com" -w Passw0rd -b "dc=ibm,dc=com" "(memberOf=cn=operations,ou=groups,dc=ibm,dc=com)" dn
 ```
 
-To use Infrastucture Automation, the default `admin` password is:
+The default `admin` password is:
 
 ```sh
 oc -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d
 ```
 
-## The resources to be deployed
+#### Red Hat Advanced Cluster Management
 
-- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Red Hat Advanced Cluster Management 2.4, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Turbonomics and RHACM Observability.
+The route to Red Hat Advanced Cluster Management is
 
-- The asset can Auto-Discover OpenShift Clusters from provided Red Hat OpenShift Cluster Manager credentials, and provide the opportunity to import the OpenShift clusters as Managed Clusters and configure them into the OpenShift GitOps Cluster. We have retained the old option of semi-automatically importing existing OpenShift Clusters, but manual steps are still required.
+```sh
+oc -n open-cluster-management get route multicloud-console --template '{{.spec.host}}'
+```
 
-- Additionally, the asset can automatically create a connection to an account and deploy an OpenShift Cluster into AWS, Azure or vSphere via ArgoCD. Again, this configuration is for an example only and you will need to replace these files with your own.
+## Managing OpenShift Clusters via OpenShift GitOps
 
-- Connections to IaaS environments can be automatically done as part of the deployment of this asset. A basic example of this connecting to a vSphere Cluster is included as an example.
+Within this asset we treat Managed Clusters as OpenShift GitOps Applications. This allows us to Create, Remove and Import Managed Clusters into Red Hat Advanced Cluster Manmagement via OpenShift GitOps.
 
-- The asset will provide example OpenShift Pipeline for deploying a Virtual Machine to the IaaS environment.
+Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to enable/disable the Clusters that will be deployed via OpenShift GitOps.
 
-- Finally, we have included an example application which can deployed via GitOps to OpenShift Clusters configured into Red Hat Advanced Cluster Management.
+  ```yaml
+  resources:
+  ## Create Clusters
+  ## Include the Clusters you wish to create below
+  ## Examples have been provided
+   - argocd/clusters/create/aws/aws-tokyo.yaml
+  # - argocd/clusters/create/azure/azure-aus.yaml
+  # - argocd/clusters/create/vsphere/vsphere.yaml
+  ```
 
-### Tasks: 
+  * We have have provided examples for deploying new clusters into AWS, Azure and VMWare. Cluster Deployments require the use of your Cloud Provider API Keys to allow RHACM to connect to your Cloud Provider and deploy via Terraform an OpenShift cluster. We utilise SealedSecrets Controller to encrypt your API Keys and have provided a handy script for each Cloud Provider within the `Application` repository, under `clusters/cluster-build/<cloud provider>` for your use.
 
-1. Use the `single-cluster` profile.
+  * Red Hat Advanced Cluster Management 2.4 makes the use of the Discovery Service, that will auto-discover and import OpenShift Clusters configured within your RHOCM account. You can still perform this action outside of the Discovery Service, but this does mean that manual steps are required. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual.
 
-    ```bash
-    GITOPS_PROFILE="0-bootstrap/single-cluster"
-    ```
+  ```yaml
+  resources:
+  ## Discover & Import Existing Clusters
+   - argocd/clusters/discover/discover-openshift.yaml
+  #
+  ## Include any Clusters you wish to manually import below
+  ## Examples have been provided
+  # - argocd/clusters/import/ibmcloud/ibmcloud-syd.yaml
+  # - argocd/clusters/import/vsphere/ocp-swinney-io.yaml
+  ```
 
-2. Review the `Infrastructure` layer [kustomization.yaml](0-bootstrap/single-cluster/1-infra/kustomization.yaml) to view the resources that will be deployed.
+  * An example of how you can perform the final steps of manually importing a cluster can be seen below. The use of OpenShift GitOps is used to firstly create all the resources needed by RHACM to perform an import, then once completed, you would follow the remaining steps. The aim in the future would be to automate these steps.
 
-3. Review the `Services` layer [kustomization.yaml](0-bootstrap/single-cluster/2-services/kustomization.yaml) to view the resources that will be deployed.  
+  * Uncomment the clusters you wish to import from `Application` [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) file and commit to Git.
 
-4. Commit and push changes to your git repository
+  ```yaml
+  resources:
+  ## Include any Clusters you wish to manually import below
+  ## Examples have been provided
+    - argocd/clusters/import/ibmcloud/ibmcloud-syd.yaml
+  # - argocd/clusters/import/vsphere/ocp-swinney-io.yaml
+  ```
 
-    ```bash
-    git add .
-    git commit -m "initial bootstrap setup"
-    git push origin
-    ```
+  * OpenShift GitOps will then begin the Import routine, and once synced, complete the remaining steps listed below.
 
-5. Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to review the resources that can be deployed.
+  ```bash
+  export OCP-VSPHERE="ocp-swinney-io"
 
-  * We have provided a number of examples that can be copied to Create and Import IaaS Providers within Infrastructure Automation and similar with RHACM, where you can Create and Import OpenShift clusters. These examples are for guidance only and will not work if you attempt to deploy.
-
-  * Creating and/or Importing IaaS Providers within IBM Infrastrucutre Automation
-  
-     * Details to follow.
-  
-  * Creating Clusters within Red Hat Advanced Cluster Management
-
-     * We have have provided examples which can be used to deploy new clusters. These examples require the use of your Cloud Provider "keys" to allow RHACM to connect to your Cloud and deploy via Terraform an OpenShift cluster. We utilise SealedSecrets to encrypt your "keys" and have provided a handy script within the `Application` repo for your use.
-
-  * Importing Clusters into Red Hat Advanced Cluster Management
-  
-     * Red Hat Advanced Cluster Management 2.4 makes the use of the Discovery Service, that will auto-discover and import OpenShift Clusters configured within your RHOCM account. You can still perform this action outside of the Discovery Service, but this does mean that manual steps are required. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual.
-
-     * An example of how you can perform the final steps of manually importing a cluster can be seen below. The use of OpenShift GitOps is used to firstly create all the resources needed by RHACM to perform an import, then once completed, you would follow the remaining steps. The aim in the future would be to automate these steps.
-
-     * Uncomment the clusters you wish to import from `Application` [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) file. 
-
-    ![importclusterexample](doc/images/importclustersexample.png)
-
-    * OpenShift GitOps will then begin the Import routine, and once synced, complete the remaining steps listed below.
-
-
-    ```bash
-    OCP-VSPHERE="ocp-swinney-io"
-    OCP-IBMCLOUD="syd-ibm-cloud"
-
-    # Log into OCP Production Hub Cluster
+  # Log into OCP Production Hub Cluster
     
-    # Klusterlet-crd
-    oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.crds\\.yaml} | base64 --decode > ${OCP-VSPHERE}-klusterlet-crd.yaml
-    oc get secret ${OCP-IBMCLOUD}-import -n ${OCP-IBMCLOUD} -o jsonpath={.data.crds\\.yaml} | base64 --decode > ${OCP-IBMCLOUD}-klusterlet-crd.yaml
+  # Klusterlet-crd
+  oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.crds\\.yaml} | base64 --decode > ${OCP-VSPHERE}-klusterlet-crd.yaml
     
-    # managed-cluster-import
-    oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.import\\.yaml} | base64 --decode > ${OCP-VSPHERE}-managed-cluster-import.yaml
-    oc get secret ${OCP-IBMCLOUD}-import -n ${OCP-IBMCLOUD} -o jsonpath={.data.import\\.yaml} | base64 --decode > ${OCP-IBMCLOUD}-managed-cluster-import.yaml
+  # managed-cluster-import
+  oc get secret ${OCP-VSPHERE}-import -n ${OCP-VSPHERE} -o jsonpath={.data.import\\.yaml} | base64 --decode > ${OCP-VSPHERE}-managed-cluster-import.yaml
     
-    # Log into vSphere Managed OCP Cluster
-    oc apply -f ${OCP-VSPHERE}-klusterlet-crd.yaml
-    oc apply -f ${OCP-VSPHERE}-managed-cluster-import.yaml
-    
-    # Log into IBM Cloud Managed OCP Cluster
-    oc apply -f ${OCP-IBMCLOUD}-klusterlet-crd.yaml
-    oc apply -f ${OCP-IBMCLOUD}-managed-cluster-import.yaml
-    ```
+  # Log into vSphere Managed OCP Cluster
+  oc apply -f ${OCP-VSPHERE}-klusterlet-crd.yaml
+  oc apply -f ${OCP-VSPHERE}-managed-cluster-import.yaml
+  ```
 
-    * Within a few minutes your Imported Clusters will show within RHACM.
+  * Within a few minutes your Imported Clusters will show within RHACM.
 
     ![importedclusterexample](doc/images/importedclusterfinished.png)
 
-6. The asset has been configured so that any OpenShift cluster that is imported or created, will be automatically configured with OpenShift GitOps and deployed with a custom ArgoCD controller.
+## Managing IaaS Providers within IBM Infrastructure Automation
+  
+* Details to follow.
+
+## Deployment of Cloud Paks through OpenShift GitOps
+
+We will use IBM Cloud Pak for Integration (CP4i) as an example Application that can be deployed onto your Managed Clusters. As mentioned previously, we re-use the GitOps approach, and utilise OpenShift GitOps to configure the cluster ready for CP4i, through deploying OpenShift Container Storage, creating Nodes with the correct CPU and Memory, installing the necessary services and tools, and finally, deploy CP4i with MQ and ACE.
+
+There is a few minor manual steps which need to be completed, and that is preparing the CP4i respository with your Cloud details and adding the IBM Cloud Pak Entitlement Secret into the Managed Cluster. In future, we aim to automate this step via SealedSecrets, Vault and Ansible Tower.
+
+We will use the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) repositories and it is assumed you have already configured these repostories by following the very comprehensive guide put together by that team. That configuration of those repositories are beyond the scope of this asset.
+
+```bash
+# Log into Managed Cluster that the CP4i will be deployed too via oc login
+oc login --token=<token> --server=<server> 
+
+# Clone the multi-tenancy-gitops repository you configured via the Cloud Native Toolkit - GitOps Production Deployment Guide
+git clone git@github.com:cp4i-cloudpak/multi-tenancy-gitops.git
+
+cd multi-tenancy-gitops
+# Run the infra-mod.sh script to configure the Infrastruture details of the Managed Cluster
+./scripts/infra-mod.sh
+
+# Create an IBM Entitlement Secret within the tools namespace
    
-    * This has been done to continue our GitOps approach within Managed Clusters. This is achieved through the use of Policies, which are automatically loaded into RHACM, which in turns uses these to ensure OpenShift GitOps is installed and remains installed in the event of accidently deletion.
+## To get an entitlement key:
+## 1. Log in to https://myibm.ibm.com/products-services/containerlibrary with an IBMid and password associated with the entitled software.  
+## 2. Select the **View library** option to verify your entitlement(s). 
+## 3. Select the **Get entitlement key** to retrieve the key.
 
-7. The Managed Clusters are now ready for the deployment of Cloud Paks, again this is managed through OpenShift GitOps.
+oc new-project tools || true
+oc create secret docker-registry ibm-entitlement-key -n tools \
+--docker-username=cp \
+--docker-password="<entitlement_key>" \
+--docker-server=cp.icr.io
+```
 
-    * We will use IBM Cloud Pak for Integration (CP4i) as an example Application that can be deployed onto your Managed Clusters. As mentioned previously, we re-use the GitOps approach, and utilise OpenShift GitOps to configure the cluster ready for CP4i, through deploying OpenShift Container Storage, creating Nodes with the correct CPU and Memory, installing the necessary services and tools, and finally, deploy CP4i with MQ and ACE.
+*Note:* Our aim is to reduce these steps in future releases of the asset.
 
-    * There is a few minor manual steps which need to be completed, and that is preparing the CP4i respository with your Cloud details and adding the IBM Cloud Pak Entitlement Secret into the Managed Cluster. In future, we aim to automate this step via SealedSecrets, Vault and Ansible Tower.
+You will need to update the `tenents/cloudpaks/cp4i/cp4i-placement-rule.yaml` file within the `mcm-aiops-gitops-apps` repository to match the cluster you wish to deploy the Cloud Pak to and commit to Git.
 
-    We will re-use the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) repositories and it is assumed you have already configured these repostories by following the very comprehensive guide put together by that team. That configuration is beyond the scope of this asset.
+```yaml
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: ibm-cp4i-argocd
+  namespace: openshift-gitops
+  labels:
+    app: ibm-cp4i-argocd
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions: []
+    matchLabels:
+      # Replace value with Cluster you wish to provision too.
+      name: aws-ireland
+```
 
-   ```bash
-   # Log into Managed Cluster via oc login
-   oc login --token=<token> --server=<server> 
+Uncomment the CP4i Application within `Application` [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) file and commit to Git.
 
-   # Clone the cp4i-cloudpak/multi-tenancy-gitops repository
-   git clone git@github.com:cp4i-cloudpak/multi-tenancy-gitops.git
+```yaml
+resources:
+# Deploy Applications to Managed Clusters
+## Include the Applications you wish to deploy below
+## An example has been provided
+ - argocd/cloudpaks/cp4i/cp4i.yaml
+```
 
-   cd multi-tenancy-gitops
-   ./scripts/infra-mod.sh
-
-   # Create an IBM Entitlement Secret within the tools namespace
-   
-   ## To get an entitlement key:
-   ## 1. Log in to https://myibm.ibm.com/products-services/containerlibrary with an IBMid and password associated with the entitled software.  
-   ## 2. Select the **View library** option to verify your entitlement(s). 
-   ## 3. Select the **Get entitlement key** to retrieve the key.
-
-    oc new-project tools || true
-    oc create secret docker-registry ibm-entitlement-key -n tools \
-    --docker-username=cp \
-    --docker-password="<entitlement_key>" \
-    --docker-server=cp.icr.io
-   ```
-
-   Our aim is to reduce these steps down in future releases of the asset.
+OpenShift GitOps will create a RHACM Application that subscribes to the `multi-tenancy-gitops` repository you configured and apply the manifests to the Managed Cluster's OpenShift-GitOps controller. 

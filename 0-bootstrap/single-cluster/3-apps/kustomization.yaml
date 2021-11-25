@@ -14,8 +14,9 @@ resources:
 #- argocd/infra/providers/rhacm/vsphere/vsphere-eltham.yaml
 #- argocd/infra/providers/rhacm/rhocm/rhocm-test.yaml 
 
-## Discover & Import Existing Clusters
+## Discover & Import Existing Clusters (Require RHOCM Credentials to be created and enabled)
 #- argocd/clusters/discover/discover-openshift.yaml
+#
 ## Include any Clusters you wish to manually import below
 ## Examples have been provided
 #- argocd/clusters/import/ibmcloud/ibmcloud-syd.yaml
