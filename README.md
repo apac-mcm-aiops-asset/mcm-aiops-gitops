@@ -118,13 +118,6 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
    brew install kubeseal
    ```
 
-- Install cloudctl
-
-   ```bash
-   wget https://github.com/IBM/cloud-pak-cli/releases/latest/download/cloudctl-darwin-amd64.tar.gz
-   tar -xzf cloudctl-darwin-amd64.tar.gz
-   ``` 
-
 - Log in from a terminal window.
 
     ```bash
