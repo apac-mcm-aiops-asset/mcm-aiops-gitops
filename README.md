@@ -11,7 +11,7 @@ The asset is not intended to be used straight into Production, and a lot of assu
 
 Whilst all efforts have been made to provide a complete `One Touch Provisioning` asset, it may not suit every environment and your mileage may vary.
 
-## Shout outs
+## Shout outs 📣
 
 This asset has been built on the shoulders of giants and leverages the great work and effort undertaken by the [Cloud Native Toolkit - GitOps Production Deployment Guide](https://github.com/cloud-native-toolkit/multi-tenancy-gitops) and [IBM Garage TSA](https://github.com/ibm-garage-tsa/cp4mcm-installer) teams. Without those efforts, then this asset would have struggled to get off the ground.
 
@@ -44,7 +44,7 @@ The reference architecture for this GitOps workflow can be found [here](https://
   - [Managing IaaS Providers within IBM Infrastructure Automation](#managing-iaas-providers-within-ibm-infrastructure-automation)
   - [Deployment of Cloud Paks through OpenShift GitOps](#deployment-of-cloud-paks-through-openShift-gitOps)
   
-## Note
+## Note ✋
 
 This repository provides an opinionated point of view on how tooling and principles such as `Terraform`, `Ansible` and `GitOps` can be used to manage the infrastructure, services and application layers of OpenShift/Kubernetes based systems. It takes into account the various personas interacting with the system and accounts for separation of duties.
 
@@ -52,7 +52,7 @@ It is assumed that you have already configured the compute, networks, storage, S
 
 This respository is not intended to be a Step-by-Step Guide and some prior knowledge in OpenShift/Kubernetes/VM Provisioning is expected.
 
-## Asset Capabilities
+## Asset Capabilities 🚀
 
 - The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
 
@@ -70,9 +70,9 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 
 - Can be configured to automatically deploy applications to Managed Clusters via OpenShift GitOps. An example provided will deploy IBM Cloud Pak for Integration (utilising full GitOps Principles) to Managed Clusters.
 
-## Pre-requisites
+## Pre-requisitesi ⬅️
 
-### Red Hat OpenShift cluster
+### Red Hat OpenShift cluster ⭕
 
 Minimum OpenShift v4.8+ is required.
 
@@ -102,7 +102,7 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
 - [IBM Cloud - ROKS](https://cloud.ibm.com/kubernetes/catalog/create?platformType=openshift)
 - [AWS - ROSA](https://aws.amazon.com/rosa/)
 
-### CLI tools
+### CLI tools 💻
 
 - Install the OpenShift CLI oc (version 4.8+) .  The binary can be downloaded from the Help menu from the OpenShift Console.
 
@@ -124,7 +124,7 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
     oc login --token=<token> --server=<server>
     ```
 
-### IBM Entitlement Key
+### IBM Entitlement Key 🔑
 
 - An `IBM Entitlement Key` is required to pull IBM Cloud Pak specific container images from the IBM Entitled Registry.
 
@@ -225,7 +225,7 @@ If you are running a managed OpenShift cluster on IBM Cloud, you can deploy Open
    ./scripts/infra-mod.sh
    ```
 
-## Bootstrap the OpenShift cluster
+## Bootstrap the OpenShift cluster 🥾
 
 - The bootstrap YAML follows the [app of apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). 
 
