@@ -56,7 +56,7 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 
 - The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
 
-- Deployment of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments.
+- Deployment of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments, including Single Node OpenShift onto On Premise hosts.
 
 - Configured to Auto-Discover OpenShift Clusters from provided Red Hat OpenShift Cluster Manager credentials, and provide the opportunity to import the OpenShift clusters as Managed Clusters and automatically configure them into the OpenShift GitOps Cluster.
 
@@ -112,10 +112,10 @@ Leveraging the work undertaken by the Cloud Native Toolkit team, you can utilise
     ![oc cli](doc/images/oc-cli.png)
     </details>
 
-- Install kubeseal from brew.sh
+- Install helm and kubeseal from brew.sh
 
    ```bash
-   brew install kubeseal
+   brew install kubeseal && brew install helm
    ```
 
 - Log in from a terminal window.

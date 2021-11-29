@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-cluster-ocp-swinney-io
+  name: apps-cluster-vsphere-eltham
   annotations:
     argocd.argoproj.io/sync-wave: "350"
   labels:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: applications
   source:
-    path: clusters/import/managed-clusters/vsphere/ocp-swinney-io
+    path: clusters/cluster-build/vsphere/vsphere-eltham/
   syncPolicy:
     automated:
       prune: true
