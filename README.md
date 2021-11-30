@@ -54,13 +54,15 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 
 ## Asset Capabilities 🚀
 
-- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation, IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
+- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation (only supported on Bare-metal nodes), IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
 
-- Deployment of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments, including Single Node OpenShift onto On Premise hosts.
+- Deployment and management of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments, including Single Node OpenShift onto On Premise hosts.
+
+- Deployed Managed OpenShift Clusters on AWS, Azure and GCP can be Hibernated when not in-use to reduce the amount of resources consumed on your provider, potentially lowering costs.
 
 - Configured to Auto-Discover OpenShift Clusters from provided Red Hat OpenShift Cluster Manager credentials, and provide the opportunity to import the OpenShift clusters as Managed Clusters and automatically configure them into the OpenShift GitOps Cluster.
 
-- Centalised OpenShift GitOps for deployment of Applications across any Managed OpenShift Cluster. View all deployed Applications across the entire fleet of OpenShift Clusters, regardless of Clusters location (i.e. AWS, GCP, on-premise etc).
+- Centralised OpenShift GitOps for deployment of Applications across any Managed OpenShift Cluster. View all deployed Applications across the entire fleet of OpenShift Clusters, regardless of Clusters location (i.e. AWS, GCP, on-premise etc).
 
 - Automatically apply policies and governance to ALL Clusters within Red Hat Advanced Cluster Management, regardless of Clusters location.
 
@@ -70,7 +72,7 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 
 - Can be configured to automatically deploy applications to Managed Clusters via OpenShift GitOps. An example provided will deploy IBM Cloud Pak for Integration (utilising full GitOps Principles) to Managed Clusters.
 
-## Pre-requisitesi ⬅️
+## Pre-requisites ⬅️
 
 ### Red Hat OpenShift cluster ⭕
 
@@ -304,7 +306,9 @@ oc -n open-cluster-management get route multicloud-console --template '{{.spec.h
 
 ## Managing OpenShift Clusters via OpenShift GitOps
 
-Within this asset we treat Managed Clusters as OpenShift GitOps Applications. This allows us to Create, Remove and Import Managed Clusters into Red Hat Advanced Cluster Manmagement via OpenShift GitOps.
+Within this asset we treat Managed Clusters as OpenShift GitOps Applications. This allows us to Create, Destroy, Hibernate and Import Managed Clusters into Red Hat Advanced Cluster Manmagement via OpenShift GitOps.
+
+### Creating and Destroying Managed OpenShift Clusters
 
 Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/3-apps/kustomization.yaml) to enable/disable the Clusters that will be deployed via OpenShift GitOps.
 
@@ -319,6 +323,8 @@ Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/
   ```
 
   * We have have provided examples for deploying new clusters into AWS, Azure and VMWare. Cluster Deployments require the use of your Cloud Provider API Keys to allow RHACM to connect to your Cloud Provider and deploy via Terraform an OpenShift cluster. We utilise SealedSecrets Controller to encrypt your API Keys and have provided a handy script for each Cloud Provider within the `Application` repository, under `clusters/cluster-build/<cloud provider>` for your use.
+
+### Auto-discovery and import of Managed OpenShift Clusters
 
   * Red Hat Advanced Cluster Management 2.4 makes the use of the Discovery Service, that will auto-discover and import OpenShift Clusters configured within your RHOCM account. You can still perform this action outside of the Discovery Service, but this does mean that manual steps are required. We have provided the ability to utilise ArgoCD for part of the process, but the final steps remain to be manual.
 
@@ -366,6 +372,17 @@ Review the `Applications` layer [kustomization.yaml](0-bootstrap/single-cluster/
   * Within a few minutes your Imported Clusters will show within RHACM.
 
     ![importedclusterexample](doc/images/importedclusterfinished.png)
+
+### Hibernating Managed OpenShift Clusters
+
+  * You can Hibernate deployed Managed OpenShift Clusters running on AWS, Azure and GCP when not in use to reduce on running costs. This has to be done *AFTER* a cluster has been deployed. This is accomplished by modifying the `spec.powerState` from `Running` to `Hibernating` of the ClusterDeployment manifest (Located under `mcm-aiops-gitops-apps repo/clusters/cluster-build/<aws|azure|gcp>/<cluster-name>/templates/clusterdeployment.yaml`) of the Managed OpenShift Cluster and committing to Git.
+
+  ```yaml
+  spec:
+    powerState: Hibernating
+  ```
+
+  * To resume a hibernating Managed OpenShift Cluster, you modify the `spec.powerState` value from `Hibernating` to `Running` and commit to Git.
 
 ## Managing IaaS Providers within IBM Infrastructure Automation
   
