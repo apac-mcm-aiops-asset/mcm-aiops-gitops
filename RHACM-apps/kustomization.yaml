@@ -1,0 +1,4 @@
+resources:
+- helloworld/deploy-all-cluster.yaml
+#- mortgage/deploy-all-cluster.yaml
+- pacman/deploy-all-cluster.yaml
