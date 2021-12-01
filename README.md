@@ -54,7 +54,7 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 
 ## Asset Capabilities 🚀
 
-- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform, Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation (only supported on Bare-metal nodes), IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
+- The asset will deploy an opionated OpenShift Hub cluster running OpenShift GitOps, OpenShift Pipelines, OpenShift Data Foundation, Ansible Automation Platform (Additional Subscription required), Red Hat Advanced Cluster Management 2.4, OpenShift Virtualisation (only supported on Bare-metal nodes), IBM Infrastructure Automation from the IBM Cloud Pak for AIOps 3.2, SealedSecrets, Instana, Turbonomics and RHACM Observability.
 
 - Deployment and management of Managed OpenShift Clusters via OpenShift GitOps onto Amazon Web Services, Microsoft Azure, Google Cloud Platform, VMWare vSphere and Bare-metal environments, including Single Node OpenShift onto On Premise hosts.
 
@@ -71,6 +71,10 @@ This respository is not intended to be a Step-by-Step Guide and some prior knowl
 - Can be configured to automatically connect to IaaS environments, enable deployment of Virtual Machines via IBM Infrastructure Automation and OpenShift Pipelines.
 
 - Can be configured to automatically deploy applications to Managed Clusters via OpenShift GitOps. An example provided will deploy IBM Cloud Pak for Integration (utilising full GitOps Principles) to Managed Clusters.
+
+### Coming Soon
+
+- Zero Touch Provisioning of Managed OpenShift Clusters to Bare-metal nodes (Think Edge Deployments)
 
 ## Pre-requisites ⬅️
 

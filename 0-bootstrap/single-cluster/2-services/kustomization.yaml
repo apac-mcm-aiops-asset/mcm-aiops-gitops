@@ -41,6 +41,10 @@ resources:
 - argocd/operators/ibm-infra-automation-operator.yaml
 - argocd/instances/ibm-infra-automation-instance.yaml
 
+# Ansible Automation Platform
+- argocd/operators/ansible-automation-platform-operator.yaml
+- argocd/instances/ansible-automation-platform-instance.yaml
+
 # Observability
 #- argocd/operators/turbonomic.yaml
 #- argocd/instances/instana-agent.yaml
