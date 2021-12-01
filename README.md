@@ -1,4 +1,10 @@
-# One Touch Provisioning for IBM Cloud Pak across Multi Cloud
+# Note 💡
+
+This repository has been archived and will no-longer be maintained.
+
+You can find it's new location at : https://github.com/one-touch-provisioning/otp-gitops
+
+## One Touch Provisioning for IBM Cloud Pak across Multi Cloud
 
 ## Elevator Pitch
 
