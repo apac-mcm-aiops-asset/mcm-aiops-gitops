@@ -56,6 +56,8 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: open-cluster-management-observability
     server: https://kubernetes.default.svc
+  - namespace: ansible-automation-platform
+    server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: ""
     kind: Namespace

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openshift-pipelines
+  name: openshift-pipelines-operator
   annotations:
     argocd.argoproj.io/sync-wave: "200"
   labels:
